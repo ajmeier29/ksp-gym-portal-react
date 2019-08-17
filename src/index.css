@@ -19,5 +19,11 @@ code {
   margin-left: 5em;
 }
 
+.alertToast {
+  width: 500px;
+  margin: auto;
+  text-align: center;
+}
+
 .subButton {
 }

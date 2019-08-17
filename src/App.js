@@ -1,6 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { allResolved } from 'q';
+
+const AlertUpdate = props => {
+  return (
+    <div className="alert alert-primary alertToast" role="alert">
+      Successfully loaded all workouts!!
+    </div>
+  );
+};
 
 const DisplayList = props => {
   return (
@@ -14,7 +23,12 @@ const DisplayList = props => {
 };
 
 function App() {
-  return <DisplayList />;
+  return (
+    <div>
+      <AlertUpdate />
+      <DisplayList />
+    </div>
+  );
 }
 
 // function App() {
