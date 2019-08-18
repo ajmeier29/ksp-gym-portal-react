@@ -15,6 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const panelStyles = makeStyles(theme => ({
   root: {
     width: '75%',
+    'margin-top': '10px',
     margin: 'auto',
     outline: 0,
     padding: '5px',
