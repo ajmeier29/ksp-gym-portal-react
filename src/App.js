@@ -18,36 +18,36 @@ import { setTimeout } from 'timers';
 import PropTypes from 'prop-types';
 
 const testWorkout = {
-  _id: {
-    $oid: '5d2a351b00557896c7489d23'
+  id: {
+    entityid: '5d2a351b00557896c7489d23'
   },
-  workout_name: 'Adult',
+  workout_name: 'Adult Metabolic',
   workout_date: '2019-07-13T17:00:00Z',
   workout_image_url: 'www.google.com',
   workout_series: [
     {
       series_number: {
-        $numberDouble: '1'
+        numberDouble: '1'
       },
       series_tag: '3x',
       exercises: [
         {
           exercise_number: {
-            $numberDouble: '1'
+            numberDouble: '1'
           },
           exercise_name: 'DB Squat 3 Sec Dec',
           exercise_reps: '8-10x'
         },
         {
           exercise_number: {
-            $numberDouble: '2'
+            numberDouble: '2'
           },
           exercise_name: 'Ladders',
           exercise_reps: '2-3x'
         },
         {
           exercise_number: {
-            $numberDouble: '3'
+            numberDouble: '3'
           },
           exercise_name: 'SB Slams',
           exercise_reps: '8-10x'
@@ -56,27 +56,27 @@ const testWorkout = {
     },
     {
       series_number: {
-        $numberDouble: '2'
+        numberDouble: '2'
       },
       series_tag: '2x - 3x',
       exercises: [
         {
           exercise_number: {
-            $numberDouble: '1'
+            numberDouble: '1'
           },
           exercise_name: 'DB Good Mornings',
           exercise_reps: '10x'
         },
         {
           exercise_number: {
-            $numberDouble: '2'
+            numberDouble: '2'
           },
           exercise_name: 'Ring Squats/Jumps',
           exercise_reps: '10-15x'
         },
         {
           exercise_number: {
-            $numberDouble: '3'
+            numberDouble: '3'
           },
           exercise_name: 'KB 1 Side Carry',
           exercise_reps: '1-2x'
@@ -109,30 +109,53 @@ const testWorkout = {
 // }
 
 const divStyle = {
-  position: 'absolute',
-  top: 5,
+  position: 'relative',
+  top: 20,
   bottom: 0,
-  left: '10%',
-  right: 0,
-  margin: 'auto'
+  'padding-right': '100px',
+  'padding-left': '100px'
 };
 
 const LineItem = props => {
+  const [showCard, setShowCard] = useState(false);
+  const handleClick = () => {
+    setShowCard(!showCard);
+  };
+
+  const listWorkouts = testWorkout.workout_series.map(series => (
+    <div>
+      <ul>
+        <li>Series Number: {series.series_number.numberDouble}</li>
+        <ul>
+          {series.exercises.map(exercise => (
+            <li>{exercise.exercise_name}</li>
+          ))}
+        </ul>
+      </ul>
+    </div>
+  ));
   return (
     <div style={divStyle}>
-      <Container bsPrefix="w-100 p-3">
+      <Container bsPrefix="border border-dark rounded w-100 p-1">
         <Row>
-          <Col lg="8">
-            <div className="card">
-              <div className="card-body">Workout Information blah bla bla</div>
+          <Col lg="10">
+            <div className="card bg-light">
+              <div className="card-body">
+                Workout Name: {testWorkout.workout_name} | Workout Date:{' '}
+                {testWorkout.workout_date} | Workout ID:{' '}
+                {testWorkout.id.entityid}
+              </div>
             </div>
           </Col>
-          <Col xs={2}>
-            <div className="card">
+          <Col xs={1.5}>
+            <div className="card" onClick={handleClick}>
               <div className="card-body btn btn-primary">Show Workout</div>
             </div>
           </Col>
         </Row>
+        <Collapse in={showCard}>
+          <div className="card bg-light">{listWorkouts}</div>
+        </Collapse>
       </Container>
     </div>
   );
@@ -158,9 +181,11 @@ function App() {
   return (
     <div>
       <LineItem />
+      <LineItem />
+      <LineItem />
       {/* <ShowToast /> */}
       {/* <Example /> */}
-      <DisplayList />
+      {/* <DisplayList /> */}
     </div>
   );
 }
