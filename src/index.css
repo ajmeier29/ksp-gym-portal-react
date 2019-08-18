@@ -12,11 +12,13 @@ code {
     monospace;
 }
 
-.test {
-  width: 18rem;
+.line-item-card {
+  display: inline-block;
   text-align: center;
   margin-top: 5em;
   margin-left: 5em;
+  vertical-align: middle;
+  margin: 10px 0;
 }
 
 .alertToast {
