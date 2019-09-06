@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -34,24 +34,21 @@ const panelStyles = makeStyles(theme => ({
 }));
 
 const WorkoutExpandableTable = props => {
+  const [workoutinfo, setWorkoutinfo] = useState([]);
   console.log('TESTTESTEST');
   const classes = panelStyles();
-  useEffect(() => {
-    fetch('http://localhost:5000/api/workout/GetLatestWorkoutsLimitAsync/3')
-      .then(result => result.json()) // here
-      .then(result => {
-        const { a } = result; // access 'a' key from response
-        this.setState({
-          isLoaded: true,
-          items: a
-        });
-      });
-  });
+
+  fetch('http://localhost:5000/api/workout/GetLatestWorkoutsLimitAsync/3')
+    .then(response => response.json())
+    .then(data => {
+      // data.map(s => console.log(`DATA: ${JSON.stringify(s)}`));
+      setWorkoutinfo(data);
+    });
 
   // const newData = data();
   return (
     <div className={classes.root}>
-      {props.workoutinfo.map(workout => {
+      {workoutinfo.map(workout => {
         return <WorkoutLineItem workoutinfo={workout} />;
       })}
     </div>

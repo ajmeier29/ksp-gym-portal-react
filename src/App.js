@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       <NavBar />
-      <WorkoutExpandableTable workoutinfo={TestWorkoutData()} />
+      <WorkoutExpandableTable />
     </div>
   );
 }
