@@ -1,7 +1,7 @@
 import React from 'react';
 // import {TestWorkoutData} from './test-data.js';
-import { WorkoutExpandableTable, FilterForm } from './workout-table.js';
-import NavBar from './navbar.js';
+import { CreateWorkoutForm } from '../Create-Workout-Form';
+import NavBar from '../navbar.js';
 import { makeStyles } from '@material-ui/core/styles';
 
 const outerDivStyles = makeStyles(theme => ({
@@ -11,16 +11,15 @@ const outerDivStyles = makeStyles(theme => ({
   }
 }));
 
-function App() {
+function CreateWorkoutApp() {
   const classes = outerDivStyles();
   return (
     <div>
       <NavBar />
       <div className={classes.root}>
-        <FilterForm />
-        <WorkoutExpandableTable />
+        <CreateWorkoutForm />
       </div>
     </div>
   );
 }
-export default App;
+export default CreateWorkoutApp;
