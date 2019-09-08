@@ -10,7 +10,7 @@ const outerDivStyles = makeStyles(theme => ({
     'flex-direction': 'row'
   }
 }));
-
+// This is the top container for the create workout page
 function CreateWorkoutApp() {
   const classes = outerDivStyles();
   return (

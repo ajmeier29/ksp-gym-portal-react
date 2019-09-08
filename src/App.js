@@ -4,6 +4,8 @@ import { WorkoutExpandableTable, FilterForm } from './workout-table.js';
 import NavBar from './navbar.js';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { CreateWorkoutForm } from './create-workoutCreate-Workout-Form';
+
 const outerDivStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
