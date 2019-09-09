@@ -5,9 +5,17 @@ import {
   NavDropdown,
   FormControl,
   Form,
-  Button
+  Button,
+  NavItem
 } from 'react-bootstrap';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  BrowserRouter as Router,
+  Link,
+  NavLink,
+  Route
+} from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const navBarStyle = makeStyles(theme => ({
   root: {
@@ -15,34 +23,40 @@ const navBarStyle = makeStyles(theme => ({
   }
 }));
 
-const NavBar = props => {
-  return (
-    <Navbar bg="transparent" variant="dark" expand="lg">
-      <Navbar.Brand href="#home">KSP Workout Portal</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="./Create-Workout">Create Workout</Nav.Link>
-          <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-              Separated link
-            </NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-success">Search</Button>
-        </Form>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-};
+// const NavBar = props => {
+//   return (
+//     <Router>
+//       <Navbar bg="transparent" variant="dark" expand="lg">
+//         <Navbar.Brand href="#home">KSP Workout Portal</Navbar.Brand>
+//         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//         <Navbar.Collapse id="basic-navbar-nav">
+//           <Nav className="mr-auto">
+//             <Nav.Link href="#home">Home</Nav.Link>
+//             <Navbar.Brand as={NavLink} to="/create-workout/Create-Workout-Form">
+//             Create Workout
+//           </Navbar.Brand>
+//             {/* <Nav.Link href="./Create-Workout">Create Workout</Nav.Link> */}
+//             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+//               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+//               <NavDropdown.Item href="#action/3.2">
+//                 Another action
+//             </NavDropdown.Item>
+//               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+//               <NavDropdown.Divider />
+//               <NavDropdown.Item href="#action/3.4">
+//                 Separated link
+//             </NavDropdown.Item>
+//             </NavDropdown>
+//           </Nav>
+//           <Form inline>
+//             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+//             <Button variant="outline-success">Search</Button>
+//           </Form>
+//         </Navbar.Collapse>
+//       </Navbar>
+//       <Route path="/" exact component={Home} />
+//     </Router>
+//   );
+// };
 
 export default NavBar;

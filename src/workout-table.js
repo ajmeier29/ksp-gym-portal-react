@@ -133,7 +133,7 @@ const WorkoutExpandableTable = props => {
     fetchJsonPromise(apiGetWorkouts)
       .then(res => setWorkoutinfo(res))
       .catch(error => {
-        alert('ERROR!');
+        alert('ERROR: Unable to reach Workout API!');
       });
   }, []);
 
