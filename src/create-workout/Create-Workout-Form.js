@@ -1,58 +1,188 @@
-import React, { useEffect, useState } from 'react';
-import { setTimeout } from 'timers';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+  Paper,
+  Grid,
   ExpansionPanel,
   ExpansionPanelSummary,
+  Typography,
   ExpansionPanelDetails,
-  Typography
+  FormControl,
+  FormLabel,
+  FormGroup,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText
 } from '@material-ui/core';
-
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import fetchJsonPromise from '../api/api-calls';
-import {
-  Dropdown,
-  DropdownButton,
-  SplitButton,
-  Form,
-  ButtonToolbar
-} from 'react-bootstrap';
 
-const panelStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: '75%',
-    'margin-top': '10px',
-    margin: 'auto',
-    outline: 0,
-    padding: '5px',
-    'border-radius': '2x',
-    'justify-content': 'center',
-    'background-color': '#383838'
+    flexGrow: 1,
+    margin: '50px'
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
   },
-  summary: {
-    'background-color': '#484848',
-    color: 'white'
+  formControl: {
+    margin: theme.spacing(3)
   }
 }));
 
-const filterBoxStyles = makeStyles(theme => ({
-  root: {
-    'margin-top': '10px',
-    'padding-left': '20px',
-    width: '10%',
-    float: 'left'
-  }
-}));
+// The entire workout form assembled together
+const CreateWorkoutEntryForm = () => {
+  const classes = useStyles();
 
-// Component Description:
-//    Form for creating a new workout
-const CreateWorkoutForm = () => {
-  return <>Hello World!! create workout</>;
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper}>xs=12</Paper>
+        </Grid>
+        <Grid item xs={2}>
+          <FilterSelectionComponent />
+          {/* <Paper className={classes.paper}>xs=6</Paper> */}
+        </Grid>
+        <Grid item xs={10}>
+          <Paper className={classes.paper}>xs=6</Paper>
+        </Grid>
+        <Grid item xs={3}>
+          <Paper className={classes.paper}>xs=3</Paper>
+        </Grid>
+        <Grid item xs={3}>
+          <Paper className={classes.paper}>xs=3</Paper>
+        </Grid>
+        <Grid item xs={3}>
+          <Paper className={classes.paper}>xs=3</Paper>
+        </Grid>
+        <Grid item xs={3}>
+          <Paper className={classes.paper}>xs=3</Paper>
+        </Grid>
+      </Grid>
+    </div>
+  );
 };
 
-export { CreateWorkoutForm };
+const FilterSelectionComponent = () => {
+  return (
+    <>
+      <LocationSelectionFilter />
+    </>
+  );
+};
+
+const LocationSelectionFilter = () => {
+  const classes = useStyles();
+  const [locations, setLocations] = useState([]);
+
+  // TEMP, NEED TO REMOVE
+  const arrLocations = [
+    {
+      name: 'Allentown',
+      phone: '6013905742'
+    },
+    {
+      name: 'Bethlehem',
+      phone: '6103905742'
+    }
+  ];
+
+  useEffect(() => {
+    setLocations(arrLocations);
+  }, []);
+  return (
+    <>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>Locations</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <CheckBoxFormGroup locations={arrLocations} />
+          {/* <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> */}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+      <ExpansionPanel>
+        <ExpansionPanelSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>Devices</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          {/* <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+            sit amet blandit leo lobortis eget.
+          </Typography> */}
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    </>
+  );
+};
+
+const CheckBoxFormGroup = props => {
+  const classes = useStyles();
+  const arrLocations = [];
+  const [checkboxLocations, setCheckBoxLocations] = useState([]);
+
+  useEffect(() => {
+    // build array of the locations to track their state
+    props.locations.map(x => {
+      arrLocations.push({
+        name: x.name,
+        checked: true
+      });
+    });
+    // set the initial state
+    setCheckBoxLocations(arrLocations);
+  }, []);
+
+  const handleChange = () => {};
+
+  return (
+    <>
+      <FormControl component="fieldset" className={classes.formControl}>
+        {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
+        <FormGroup>
+          {checkboxLocations.map((key, index) => (
+            <FormControlLabel
+              key={key.name}
+              control={
+                <Checkbox
+                  checked={key.checked}
+                  onChange={handleChange(key.name)}
+                  value={key.name}
+                />
+              }
+              label={key.name}
+            />
+          ))}
+        </FormGroup>
+      </FormControl>
+    </>
+  );
+};
+
+CheckBoxFormGroup.propTypes = {
+  locations: PropTypes.array
+};
+
+const PiSelectionFilter = () => {};
+
+const WorkoutInfoEntryForm = () => {};
+
+const SeriesInfoEntryForm = () => {};
+
+const ExerciseInfoEntryForm = () => {};
+
+export { CreateWorkoutEntryForm as CreateWorkoutForm };

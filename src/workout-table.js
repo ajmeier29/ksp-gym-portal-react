@@ -67,7 +67,7 @@ const LocationFilter = props => {
   ];
   const classes = filterBoxStyles();
   const handleSelection = (evtKey, evt) => {
-    console.log(`Selected ${evt.target.innerHTML}`);
+    // console.log(`Selected ${evt.target.innerHTML}`);
     setSelectedLocation(evt.target.innerHTML);
   };
   return (
@@ -133,7 +133,7 @@ const WorkoutExpandableTable = props => {
     fetchJsonPromise(apiGetWorkouts)
       .then(res => setWorkoutinfo(res))
       .catch(error => {
-        alert('ERROR: Unable to reach Workout API!');
+        alert('ERROR: Unable to reach Workout APIs!');
       });
   }, []);
 
