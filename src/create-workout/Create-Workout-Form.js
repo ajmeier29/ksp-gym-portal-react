@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -10,6 +11,7 @@ import {
   ExpansionPanelDetails,
   FormControl,
   FormLabel,
+  TextField,
   FormGroup,
   Checkbox,
   FormControlLabel,
@@ -32,36 +34,79 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const WorkoutName = props => {
+  return (
+    <>
+      <TextField
+        variant="outlined"
+        required
+        fullWidth
+        id="lastName"
+        label={props.workoutName}
+        name="lastName"
+        autoComplete="lname"
+        onChange={props.handleWorkoutNameChange}
+      />
+    </>
+  );
+};
+
 // The entire workout form assembled together
 const CreateWorkoutEntryForm = () => {
   const classes = useStyles();
 
+  const [workoutName, setWorkoutName] = useState('Enter Workout Name');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    let test = event.currentTarget;
+    const data = new FormData(event.target);
+
+    console.log(`WorkoutName in handlesubmit: ${workoutName}`);
+  };
+
+  const handleWorkoutNameChange = event => {
+    setWorkoutName(event.target.value);
+    console.log(`WorkoutName: ${workoutName}`);
+  };
+
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>xs=12</Paper>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>xs=12</Paper>
+          </Grid>
+          <Grid item xs={2}>
+            <Paper className={classes.paper}>
+              <WorkoutName
+                workoutName={workoutName}
+                handleWorkoutNameChange={handleWorkoutNameChange}
+              />
+            </Paper>
+
+            {/* <FilterSelectionComponent /> */}
+            {/* <Paper className={classes.paper}>xs=6</Paper> */}
+          </Grid>
+          <Grid item xs={10}>
+            <Paper className={classes.paper}>xs=6</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>xs=3</Paper>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className={classes.paper}>
+              <button>Submit</button>
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          <FilterSelectionComponent />
-          {/* <Paper className={classes.paper}>xs=6</Paper> */}
-        </Grid>
-        <Grid item xs={10}>
-          <Paper className={classes.paper}>xs=6</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-        <Grid item xs={3}>
-          <Paper className={classes.paper}>xs=3</Paper>
-        </Grid>
-      </Grid>
+      </form>
     </div>
   );
 };

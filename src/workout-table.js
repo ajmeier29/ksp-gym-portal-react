@@ -130,11 +130,10 @@ const WorkoutExpandableTable = props => {
   // if it will re render later when needed.
   useEffect(() => {
     // Fetch the data on initial page load to default
-    fetchJsonPromise(apiGetWorkouts)
-      .then(res => setWorkoutinfo(res))
-      .catch(error => {
-        alert('ERROR: Unable to reach Workout APIs!');
-      });
+    fetchJsonPromise(apiGetWorkouts).then(res => setWorkoutinfo(res));
+    //.catch(error => {
+    //alert('ERROR: Unable to reach Workout APIs!');
+    //});
   }, []);
 
   return (
