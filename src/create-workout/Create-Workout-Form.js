@@ -78,7 +78,8 @@ const useStyles = makeStyles(theme => ({
 const CreateWorkoutEntryForm = () => {
   const classes = useStyles();
 
-  const [locations, setLocations] = useState([{}]);
+  const [locations, setLocations] = useState([]);
+  const [devices, setDevices] = useState([]);
 
   const [workoutName, setWorkoutName] = useState('Enter Workout Name');
 
@@ -88,6 +89,15 @@ const CreateWorkoutEntryForm = () => {
     const data = new FormData(event.target);
 
     console.log(`WorkoutName in handlesubmit: ${workoutName}`);
+  };
+
+  const handleLocationChange = event => {
+    const index = locations.findIndex(x => x.id === event.target.value),
+      tempArray = [...locations];
+    if (index === -1) {
+      // Add new location
+      locations.push;
+    }
   };
 
   const handleWorkoutNameChange = event => {
@@ -101,7 +111,10 @@ const CreateWorkoutEntryForm = () => {
         <Grid container spacing={3}>
           <Grid className={classes.elementBackground} item xs={2}>
             <Paper>
-              <FilterSelectionComponent />
+              <FilterSelectionComponent
+                locations={locations}
+                devices={devices}
+              />
             </Paper>
           </Grid>
           <Grid item xs={10}>
@@ -127,13 +140,17 @@ const CreateWorkoutEntryForm = () => {
   );
 };
 
-const FilterSelectionComponent = () => {
+const FilterSelectionComponent = props => {
   return (
     <>
-      <LocationSelectionFilter />
-      <DevicesSelectionFilter />
+      <LocationSelectionFilter locations={props.locations} />
+      <DevicesSelectionFilter devices={props.devices} />
     </>
   );
+};
+FilterSelectionComponent.propTypes = {
+  locations: PropTypes.array,
+  devices: PropTypes.array
 };
 
 // Component that shows the filter for each location
@@ -147,10 +164,12 @@ const LocationSelectionFilter = () => {
   // REPLACE WITH WEB API CALL
   const arrLocations = [
     {
+      id: '243q3r',
       name: 'Allentown',
       phone: '6013905742'
     },
     {
+      id: 'wfer43',
       name: 'Bethlehem',
       phone: '6103905742'
     }
@@ -173,7 +192,8 @@ const LocationSelectionFilter = () => {
 const DevicesSelectionFilter = props => {
   const classes = useStyles();
   const [devices, setDevices] = useState([]);
-  const arryDevices = [
+
+  const devicesArray = [
     {
       id: 'xadfw213423',
       name: 'Adult Device 1 Alt',
@@ -200,10 +220,11 @@ const DevicesSelectionFilter = props => {
       loccation: 'Bethelehem'
     }
   ];
+
   return (
     <ExpandingCheckBox
       classes={classes}
-      dataArr={arryDevices}
+      dataArr={devicesArray}
       summaryName={'Devices'}
     />
   );
@@ -241,22 +262,43 @@ const CheckBoxFormGroup = props => {
   const tempArr = [];
   const [checkBoxDataArr, setCheckBoxDataArr] = useState([]);
 
+  // var update = require('immutability-helper')
   useEffect(() => {
     // build array of the locations to track their state
     props.dataArr.map(x => {
       tempArr.push({
         id: x.id,
-        name: x.name,
-        checked: true
+        name: x.name
+        //checked: true
       });
     });
     // set the initial state
     setCheckBoxDataArr(tempArr);
   }, []);
 
-  const handleChange = () => {
-    // setCheckBoxDataArr();
-  };
+  // const handleChange = (id) => {
+  //   var data = checkBoxDataArr;
+  //   // find the object witht the same id
+  //   var checkboxIndex = data.findIndex(x => {
+  //     return x.id == id
+  //   })
+  //   var updatedCheckbox = update(data[checkboxIndex], { checked: false });
+  //   var newData = update(data, {
+  //     $splice: [[checkboxIndex, 1, updatedCheckbox]]
+  //   });
+  //   setCheckBoxDataArr(newData)
+  // };
+
+  // const handleChange = (event) => {
+  //   var test = event.target.value;
+  //   const index = checkBoxDataArr.findIndex(x => x.id === event.target.value), tempDataArr = [...checkBoxDataArr] // important to create a copy, otherwise you'll modify state outside of setState call
+  //   tempDataArr[index] = [...checkBoxDataArr[index], {checked:false}]
+  //   //this.setState({ employees });
+  // }
+
+  //   const index = this.state.employees.findIndex(emp => emp.id === employee.id),
+  //   employees = [...this.state.employees] // important to create a copy, otherwise you'll modify state outside of setState call
+  // employees[index] = employee;
 
   return (
     <>
@@ -267,12 +309,11 @@ const CheckBoxFormGroup = props => {
               key={key.name}
               control={
                 <Checkbox
-                  checked={key.checked}
-                  onChange={handleChange(key.name)}
-                  value={key.name}
+                  value={key.id}
                   style={{
                     color: green[600]
                   }}
+                  onChange={props.handleChange}
                 />
               }
               label={
@@ -288,6 +329,7 @@ const CheckBoxFormGroup = props => {
   );
 };
 CheckBoxFormGroup.propTypes = {
+  handleChange: PropTypes.func,
   classes: PropTypes.object,
   dataArr: PropTypes.array
 };
