@@ -254,7 +254,9 @@ const CheckBoxFormGroup = props => {
     setCheckBoxDataArr(tempArr);
   }, []);
 
-  const handleChange = () => {};
+  const handleChange = () => {
+    setCheckBoxDataArr();
+  };
 
   return (
     <>
