@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
-const arrLocations = [
+const sourceLocations = [
   {
     id: '243q3r',
     name: 'Allentown',
@@ -72,7 +72,7 @@ const arrLocations = [
   }
 ];
 
-const arrDevices = [
+const sourceDevices = [
   {
     id: 'xadfw213423',
     name: 'Adult Device 1 Alt',
@@ -96,7 +96,7 @@ const arrDevices = [
   {
     id: '34r34q4f3f',
     name: 'Intro Device Beth',
-    loccation: 'Bethelehem'
+    location: 'Bethlehem'
   }
 ];
 
@@ -123,11 +123,59 @@ const removeFromArrayById = (arr, fnMatch) => {
   return arr.slice(0, index).concat(arr.slice(index + 1, arr.length));
 };
 
+// This function will perform all the procedures involved with checking and unchecking 
+// a location in the left filter panel.
+// Variables:
+//      event - The Event interface represents an event which takes place in the DOM
+//      sourceArr - the array that holds all the values in the database. In this instance it holds an array of location objects
+//      locFormArr - the formLocations state
+//      devFormArry - the formDevices state
+//      setLocStateFn - sets the state for formLocations
+//      setDevStateFn - sets the state for formDevices
+const locationCheckboxProcedures = (event, sourceArr, locFormArr, setLocStateFn) => {
+  // get the index of the location selected for use in the locations array
+  const index = sourceArr.findIndex(x => x.id === event.target.value);
+
+  let isChecked = event.target.checked;
+  var list = [];
+  if (isChecked === true) {
+    // Add to locations list
+    list = locFormArr.concat(sourceArr[index]);
+  } else {
+    // Remove the location
+    list = removeFromArrayById(
+      locFormArr,
+      x => x.id == sourceArr[index].id
+    );
+    // Remove all devices associated with that location
+  }
+  setLocStateFn(list);
+}
+
+const deviceCheckboxProcedures = (event, sourceArr, stateArr, setStateFn) => {
+  // get the index of the location selected for use in the locations array
+  const index = sourceArr.findIndex(x => x.id === event.target.value);
+
+  let isChecked = event.target.checked;
+  var list = [];
+  if (isChecked === true) {
+    // Add to locations list
+    list = stateArr.concat(sourceArr[index]);
+  } else {
+    // Remove the location
+    list = removeFromArrayById(
+      stateArr,
+      x => x.id == sourceArr[index].id
+    );
+  }
+  setStateFn(list);
+}
+
 // The entire workout form assembled together
 const CreateWorkoutEntryForm = () => {
   const classes = useStyles();
 
-  const [locations] = useState(arrLocations); // Locations in NoSQL database
+  const [locations] = useState(sourceLocations); // Locations in NoSQL database
   const [devices, setDevices] = useState([]); // Devices in NoSQL database
   const [formLocations, setFormLocations] = useState([]); // Locations to be submitted
   let [formDevices, setFormDevices] = useState([]); // Devices to be submitted
@@ -145,35 +193,46 @@ const CreateWorkoutEntryForm = () => {
 
     // console.log(`WorkoutName in handlesubmit: ${workoutName}`);
   };
-
+  // Handles a change to the Locations filter on the left side of the page.
+  // A change here will update formLocations to store what locations the workout is for.
   const handleLocationChange = event => {
-    // get the index of the location selected for use in the locations array
-    const index = locations.findIndex(x => x.id === event.target.value); //,
-    //tempArray = [...locations];
+    locationCheckboxProcedures(event, locations, formLocations, setFormLocations);
+  };
+  // This use effect handles updating the Devices filter onthe left side of the screen
+  // Devices are shown when the user selects the locaiton it is intended for.
+  useEffect(() => {
+    // build list of devices that have the location name of the ones selected
+    let checkedList = sourceDevices.filter(x => {
+      for (var i = 0; i < formLocations.length; i++) {
+        // only show the checkboxes that have the same location name
+        // as the locaiton check boxes that are selected
+        if (x.location === formLocations[i].name) {
+          return x;
+        }
+      }
+    });
+    // All boxes that are now unchecked and need to be removed
+    let uncheckedList = sourceDevices.filter(x => {
+      for (var i = 0; i < formLocations.length; i++) {
+        if (x.location === formLocations[i].name) {
+          return;
+        }
+      }
+      return x;
+    });
 
-    let isChecked = event.target.checked;
-
-    if (isChecked === true) {
-      // Add to locations list
-      let joined = formLocations.concat(locations[index]);
-      setFormLocations(joined);
-    } else {
-      // Remove the location
-      let removed = removeFromArrayById(
-        formLocations,
-        x => x.id == locations[index].id
-      ); //x => x.id == )
-      setFormLocations(removed);
-    }
+    add logic here to remove the unchecked list from the formDevices
+    that way when a user unchecks a location, the devices are also removed from the state
     // update the devices list
-    setDevices([...arrDevices]);
+    setDevices(checkedList);
+  }, [formLocations])
+
+  // Handles a change to the Devices fileter when the 
+  const handleDeviceChange = event => {
+    deviceCheckboxProcedures(event, devices, formDevices, setFormDevices);
   };
 
-  // useEffect(() =>
-  // {
 
-  //   setDevices({arrDevices});
-  // })
 
   return (
     <div className={classes.root}>
@@ -185,6 +244,7 @@ const CreateWorkoutEntryForm = () => {
                 locations={locations}
                 locationHandleFn={handleLocationChange}
                 devices={devices}
+                devicesHandleFn={handleDeviceChange}
               />
             </Paper>
           </Grid>
@@ -218,14 +278,18 @@ const FilterSelectionComponent = props => {
         locations={props.locations}
         locationHandleFn={props.locationHandleFn}
       />
-      <DevicesSelectionFilter devices={props.devices} />
+      <DevicesSelectionFilter
+        devices={props.devices}
+        devicesHandleFn={props.devicesHandleFn}
+      />
     </>
   );
 };
 FilterSelectionComponent.propTypes = {
   locations: PropTypes.array,
   devices: PropTypes.array,
-  locationHandleFn: PropTypes.func
+  locationHandleFn: PropTypes.func,
+  devicesHandleFn: PropTypes.func
 };
 
 // Component that shows the filter for each location
@@ -262,13 +326,13 @@ const DevicesSelectionFilter = props => {
       classes={classes}
       dataArr={props.devices}
       summaryName={'Devices'}
-      handleChange={props.handleChange}
+      handleChange={props.devicesHandleFn}
     />
   );
 };
 DevicesSelectionFilter.propTypes = {
   devices: PropTypes.array,
-  handleChange: PropTypes.func
+  devicesHandleFn: PropTypes.func
 };
 
 // this function returns an expanding checkbox
@@ -385,12 +449,12 @@ CheckBoxFormGroup.propTypes = {
   locations: PropTypes.array
 };
 
-const PiSelectionFilter = () => {};
+const PiSelectionFilter = () => { };
 
-const WorkoutInfoEntryForm = () => {};
+const WorkoutInfoEntryForm = () => { };
 
-const SeriesInfoEntryForm = () => {};
+const SeriesInfoEntryForm = () => { };
 
-const ExerciseInfoEntryForm = () => {};
+const ExerciseInfoEntryForm = () => { };
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm };
