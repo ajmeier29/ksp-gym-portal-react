@@ -123,7 +123,17 @@ const removeFromArrayById = (arr, fnMatch) => {
   return arr.slice(0, index).concat(arr.slice(index + 1, arr.length));
 };
 
-// This function will perform all the procedures involved with checking and unchecking 
+const containsObject = (obj, list) => {
+  var x;
+  for (x in list) {
+    if (list.hasOwnProperty(x) && list[x] === obj) {
+      return true;
+    }
+  }
+  return false;
+};
+
+// This function will perform all the procedures involved with checking and unchecking
 // a location in the left filter panel.
 // Variables:
 //      event - The Event interface represents an event which takes place in the DOM
@@ -132,7 +142,12 @@ const removeFromArrayById = (arr, fnMatch) => {
 //      devFormArry - the formDevices state
 //      setLocStateFn - sets the state for formLocations
 //      setDevStateFn - sets the state for formDevices
-const locationCheckboxProcedures = (event, sourceArr, locFormArr, setLocStateFn) => {
+const locationCheckboxProcedures = (
+  event,
+  sourceArr,
+  locFormArr,
+  setLocStateFn
+) => {
   // get the index of the location selected for use in the locations array
   const index = sourceArr.findIndex(x => x.id === event.target.value);
 
@@ -143,14 +158,11 @@ const locationCheckboxProcedures = (event, sourceArr, locFormArr, setLocStateFn)
     list = locFormArr.concat(sourceArr[index]);
   } else {
     // Remove the location
-    list = removeFromArrayById(
-      locFormArr,
-      x => x.id == sourceArr[index].id
-    );
+    list = removeFromArrayById(locFormArr, x => x.id == sourceArr[index].id);
     // Remove all devices associated with that location
   }
   setLocStateFn(list);
-}
+};
 
 const deviceCheckboxProcedures = (event, sourceArr, stateArr, setStateFn) => {
   // get the index of the location selected for use in the locations array
@@ -163,13 +175,10 @@ const deviceCheckboxProcedures = (event, sourceArr, stateArr, setStateFn) => {
     list = stateArr.concat(sourceArr[index]);
   } else {
     // Remove the location
-    list = removeFromArrayById(
-      stateArr,
-      x => x.id == sourceArr[index].id
-    );
+    list = removeFromArrayById(stateArr, x => x.id == sourceArr[index].id);
   }
   setStateFn(list);
-}
+};
 
 // The entire workout form assembled together
 const CreateWorkoutEntryForm = () => {
@@ -186,7 +195,9 @@ const CreateWorkoutEntryForm = () => {
   const [workoutName, setWorkoutName] = useState('Enter Workout Name');
 
   const handleSubmit = event => {
-    var test = formLocations;
+    const loc = formLocations;
+    const dev = formDevices;
+
     // event.preventDefault();
     // let test = event.currentTarget;
     // const data = new FormData(event.target);
@@ -196,13 +207,19 @@ const CreateWorkoutEntryForm = () => {
   // Handles a change to the Locations filter on the left side of the page.
   // A change here will update formLocations to store what locations the workout is for.
   const handleLocationChange = event => {
-    locationCheckboxProcedures(event, locations, formLocations, setFormLocations);
+    locationCheckboxProcedures(
+      event,
+      locations,
+      formLocations,
+      setFormLocations
+    );
   };
-  // This use effect handles updating the Devices filter onthe left side of the screen
+  // This use effect handles updating the Devices filter on the left side of the screen
   // Devices are shown when the user selects the locaiton it is intended for.
   useEffect(() => {
     // build list of devices that have the location name of the ones selected
-    let checkedList = sourceDevices.filter(x => {
+    const checkedList = sourceDevices.filter(x => {
+      const test = formDevices;
       for (var i = 0; i < formLocations.length; i++) {
         // only show the checkboxes that have the same location name
         // as the locaiton check boxes that are selected
@@ -211,29 +228,30 @@ const CreateWorkoutEntryForm = () => {
         }
       }
     });
-    // All boxes that are now unchecked and need to be removed
-    let uncheckedList = sourceDevices.filter(x => {
-      for (var i = 0; i < formLocations.length; i++) {
-        if (x.location === formLocations[i].name) {
-          return;
-        }
-      }
-      return x;
-    });
-
-    add logic here to remove the unchecked list from the formDevices
-    that way when a user unchecks a location, the devices are also removed from the state
     // update the devices list
     setDevices(checkedList);
-  }, [formLocations])
-
-  // Handles a change to the Devices fileter when the 
+  }, [formLocations]);
+  // This hook is to manage the formDevices list upon chages made to
+  // the devices state list
+  useEffect(() => {
+    const checkedList = sourceDevices.filter(x => {
+      for (var i = 0; i < formLocations.length; i++) {
+        // Only add the items in the list that are for that location
+        // and are previously in formDevices
+        if (x.location === formLocations[i].name) {
+          if (containsObject(x, formDevices)) {
+            return x;
+          }
+        }
+      }
+    });
+    // update the formDevices list for submitting
+    setFormDevices(checkedList);
+  }, [devices]);
+  // Handles a change to the Devices fileter when the
   const handleDeviceChange = event => {
     deviceCheckboxProcedures(event, devices, formDevices, setFormDevices);
   };
-
-
-
   return (
     <div className={classes.root}>
       <form onSubmit={handleSubmit}>
@@ -449,12 +467,12 @@ CheckBoxFormGroup.propTypes = {
   locations: PropTypes.array
 };
 
-const PiSelectionFilter = () => { };
+const PiSelectionFilter = () => {};
 
-const WorkoutInfoEntryForm = () => { };
+const WorkoutInfoEntryForm = () => {};
 
-const SeriesInfoEntryForm = () => { };
+const SeriesInfoEntryForm = () => {};
 
-const ExerciseInfoEntryForm = () => { };
+const ExerciseInfoEntryForm = () => {};
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm };
