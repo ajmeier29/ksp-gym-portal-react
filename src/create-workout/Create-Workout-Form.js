@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProviderwithStyles, withStyles } from '@material-ui/styles';
 import {
   Paper,
   Grid,
@@ -24,38 +24,17 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import {
   formControlLableCheckBox,
-  formGroupFilterTheme
+  formGroupFilterTheme,
+  formWorkoutTextTheme
 } from '../themes/themes.js';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    margin: '50px'
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
-  formControl: {
-    margin: theme.spacing(3)
-  },
-  elementBackground: {
-    'background-color': '#383838',
-    color: 'white'
-  },
-  elementForground: {
-    'background-color': '#484848',
-    color: 'white'
-  },
-  expansionHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
-  },
-  expansionRoot: {
-    'background-color': '#383838'
-  }
-}));
+
+
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -99,23 +78,95 @@ const sourceDevices = [
     location: 'Bethlehem'
   }
 ];
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    margin: '50px'
+  },
+  paper: {
+    padding: theme.spacing(2),
+    // color:'white',
+    textAlign: 'left', // This is what justifys all the content in the Paper....not just text
+    // color: theme.palette.text.secondary,
+    'background-color': '#383838'
+  },
+  formControl: {
+    margin: theme.spacing(3)
+  },
+  elementBackground: {
+    'background-color': '#383838',
+    color: 'white'
+  },
+  elementForground: {
+    'background-color': '#484848',
+    color: 'white'
+  },
+  expansionHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular
+  },
+  expansionRoot: {
+    'background-color': '#383838'
+  },
+  workoutTextBoxLabel: {
+    color: 'white',
+  },
+}));
 
-// const WorkoutName = props => {
-//   return (
-//     <>
-//       <TextField
-//         variant="outlined"
-//         required
-//         fullWidth
-//         id="lastName"
-//         label={props.workoutName}
-//         name="lastName"
-//         autoComplete="lname"
-//         onChange={props.handleWorkoutNameChange}
-//       />
-//     </>
-//   );
-// };
+const CssTextField = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: 'white',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+      },
+      flexGrow: 1,
+      color:'white',
+    },
+  },
+})(TextField);
+
+const WorkoutName = props => {
+  const classes = useStyles();
+  return (
+    <>
+      <div>
+        {/* <CssTextField 
+          className={classes.margin} 
+          id="custom-css-standard-input" 
+          label="Custom CSS" 
+          InputLabelProps={{
+            classes: {
+              root: classes.workoutTextBoxLabel
+            }
+          }}
+          /> */}
+        <CssTextField
+        className={classes.margin}
+        label="Workout Name"
+        variant="outlined"
+        id="custom-css-outlined-input"
+        InputLabelProps={{
+            classes: {
+              root: classes.workoutTextBoxLabel
+            }
+          }}
+      />
+      </div>
+    </>
+  );
+};
 
 // removes an item from an array based of of an 'id' attribute
 const removeFromArrayById = (arr, fnMatch) => {
@@ -266,8 +317,11 @@ const CreateWorkoutEntryForm = () => {
               />
             </Paper>
           </Grid>
-          <Grid item xs={10}>
-            <Paper className={classes.paper}>xs=6</Paper>
+          {/* <Grid className={classes.elementBackground} item xs={10}> */}
+          <Grid container justify="space-around">
+            <Paper className={classes.paper}>
+              <WorkoutName />
+            </Paper>
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>xs=3</Paper>
@@ -315,11 +369,6 @@ FilterSelectionComponent.propTypes = {
 // the correct devices are shown in the DevicesSelectionFilter
 const LocationSelectionFilter = props => {
   const classes = useStyles();
-  // const [locations, setLocations] = useState([]);
-
-  // useEffect(() => {
-  //   setLocations(props.locations);
-  // }, []);
   return (
     <ExpandingCheckBox
       classes={classes}
@@ -402,32 +451,7 @@ const CheckBoxFormGroup = props => {
     });
     // set the initial state
     setCheckBoxDataArr(tempArr);
-    console.log('called CheckBoxFormGroup');
   }, [props.dataArr]);
-
-  // const handleChange = (id) => {
-  //   var data = checkBoxDataArr;
-  //   // find the object witht the same id
-  //   var checkboxIndex = data.findIndex(x => {
-  //     return x.id == id
-  //   })
-  //   var updatedCheckbox = update(data[checkboxIndex], { checked: false });
-  //   var newData = update(data, {
-  //     $splice: [[checkboxIndex, 1, updatedCheckbox]]
-  //   });
-  //   setCheckBoxDataArr(newData)
-  // };
-
-  // const handleChange = (event) => {
-  //   var test = event.target.value;
-  //   const index = checkBoxDataArr.findIndex(x => x.id === event.target.value), tempDataArr = [...checkBoxDataArr] // important to create a copy, otherwise you'll modify state outside of setState call
-  //   tempDataArr[index] = [...checkBoxDataArr[index], {checked:false}]
-  //   //this.setState({ employees });
-  // }
-
-  //   const index = this.state.employees.findIndex(emp => emp.id === employee.id),
-  //   employees = [...this.state.employees] // important to create a copy, otherwise you'll modify state outside of setState call
-  // employees[index] = employee;
 
   return (
     <>
@@ -467,12 +491,12 @@ CheckBoxFormGroup.propTypes = {
   locations: PropTypes.array
 };
 
-const PiSelectionFilter = () => {};
+const PiSelectionFilter = () => { };
 
-const WorkoutInfoEntryForm = () => {};
+const WorkoutInfoEntryForm = () => { };
 
-const SeriesInfoEntryForm = () => {};
+const SeriesInfoEntryForm = () => { };
 
-const ExerciseInfoEntryForm = () => {};
+const ExerciseInfoEntryForm = () => { };
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm };

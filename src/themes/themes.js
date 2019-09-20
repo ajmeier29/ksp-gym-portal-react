@@ -19,4 +19,13 @@ const formGroupFilterTheme = createMuiTheme({
   }
 });
 
-export { formControlLableCheckBox, formGroupFilterTheme };
+const formWorkoutTextTheme = createMuiTheme({
+    overrides: {
+      MuiTextField: {
+        color: 'white',
+        background: 'white'
+      }
+    }
+  });
+
+export { formControlLableCheckBox, formGroupFilterTheme, formWorkoutTextTheme };
