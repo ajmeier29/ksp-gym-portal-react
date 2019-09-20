@@ -31,10 +31,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  InlineDatePicker
 } from '@material-ui/pickers';
-
-
-
+import DateFnsUtils from '@date-io/date-fns';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -109,36 +108,92 @@ const useStyles = makeStyles(theme => ({
     'background-color': '#383838'
   },
   workoutTextBoxLabel: {
-    color: 'white',
+    color: 'white'
   },
+  datePicker: {
+    color: 'white'
+  }
 }));
 
 const CssTextField = withStyles({
   root: {
     '& label.Mui-focused': {
+      color: 'white'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white'
+      },
+      '&:hover fieldset': {
+        borderColor: 'white'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white'
+      },
+      flexGrow: 1,
+      color: 'white'
+    }
+  }
+})(TextField);
+
+const CssDatePicker = withStyles({
+  root: {
+    '& .MuiInput-root': {
       color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .Mui-focused': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-input': {
+      borderBottomColor: 'white'
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+      borderBottomColor: 'white'
     },
     '& .MuiInput-underline:after': {
       borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiInput-underline:before': {
+      borderBottomColor: 'white',
+      color: 'white'
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
         borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
       },
       '&:hover fieldset': {
         borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
       },
       '&.Mui-focused fieldset': {
         borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
       },
       flexGrow: 1,
-      color:'white',
-    },
-  },
-})(TextField);
+      color: 'white'
+    }
+  }
+})(KeyboardDatePicker);
 
 const WorkoutName = props => {
   const classes = useStyles();
+  const [selectedDate, setSelectedDate] = useState(
+    new Date('2014-08-18T21:11:54')
+  );
+
+  function handleDateChange(date) {
+    setSelectedDate(date);
+  }
   return (
     <>
       <div>
@@ -153,16 +208,39 @@ const WorkoutName = props => {
           }}
           /> */}
         <CssTextField
-        className={classes.margin}
-        label="Workout Name"
-        variant="outlined"
-        id="custom-css-outlined-input"
-        InputLabelProps={{
+          className={classes.margin}
+          label="Workout Name"
+          variant="outlined"
+          id="custom-css-outlined-input"
+          InputLabelProps={{
             classes: {
               root: classes.workoutTextBoxLabel
             }
           }}
-      />
+        />
+      </div>
+      <div>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* <Grid container justify="space-around"> */}
+          <CssDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Date picker inline"
+            value={selectedDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+              'aria-label': 'change date'
+            }}
+            InputLabelProps={{
+              classes: {
+                root: classes.datePicker
+              }
+            }}
+          />
+        </MuiPickersUtilsProvider>
       </div>
     </>
   );
@@ -317,8 +395,8 @@ const CreateWorkoutEntryForm = () => {
               />
             </Paper>
           </Grid>
-          {/* <Grid className={classes.elementBackground} item xs={10}> */}
-          <Grid container justify="space-around">
+          <Grid className={classes.elementBackground} item xs={10}>
+            {/* <Grid container justify="space-around"> */}
             <Paper className={classes.paper}>
               <WorkoutName />
             </Paper>
@@ -491,12 +569,12 @@ CheckBoxFormGroup.propTypes = {
   locations: PropTypes.array
 };
 
-const PiSelectionFilter = () => { };
+const PiSelectionFilter = () => {};
 
-const WorkoutInfoEntryForm = () => { };
+const WorkoutInfoEntryForm = () => {};
 
-const SeriesInfoEntryForm = () => { };
+const SeriesInfoEntryForm = () => {};
 
-const ExerciseInfoEntryForm = () => { };
+const ExerciseInfoEntryForm = () => {};
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm };
