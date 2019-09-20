@@ -107,7 +107,7 @@ const useStyles = makeStyles(theme => ({
   expansionRoot: {
     'background-color': '#383838'
   },
-  workoutTextBoxLabel: {
+  normalTextField: {
     color: 'white'
   },
   datePicker: {
@@ -185,6 +185,31 @@ const CssDatePicker = withStyles({
   }
 })(KeyboardDatePicker);
 
+const NormalFormTextField = props => {
+  const classes = useStyles();
+  return (
+    <>
+      <CssTextField
+        className={classes.margin}
+        label={props.labelName}
+        variant="outlined"
+        id="custom-css-outlined-input"
+        onChange={props.handleChange}
+        InputLabelProps={{
+          classes: {
+            root: classes.normalTextField
+          }
+        }}
+      />
+    </>
+  );
+};
+
+NormalFormTextField.propTypes = {
+  labelName: PropTypes.string,
+  handleChange: PropTypes.func
+};
+
 const WorkoutName = props => {
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState(
@@ -197,16 +222,6 @@ const WorkoutName = props => {
   return (
     <>
       <div>
-        {/* <CssTextField 
-          className={classes.margin} 
-          id="custom-css-standard-input" 
-          label="Custom CSS" 
-          InputLabelProps={{
-            classes: {
-              root: classes.workoutTextBoxLabel
-            }
-          }}
-          /> */}
         <CssTextField
           className={classes.margin}
           label="Workout Name"
@@ -214,7 +229,7 @@ const WorkoutName = props => {
           id="custom-css-outlined-input"
           InputLabelProps={{
             classes: {
-              root: classes.workoutTextBoxLabel
+              root: classes.normalTextField
             }
           }}
         />
@@ -320,8 +335,7 @@ const CreateWorkoutEntryForm = () => {
   let [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
   let [formSeries, setFormSeries] = useState([]); // Series to be submitted
   let [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
-
-  const [workoutName, setWorkoutName] = useState('Enter Workout Name');
+  const [workoutName, setWorkoutName] = useState('');
 
   const handleSubmit = event => {
     const loc = formLocations;
@@ -332,6 +346,9 @@ const CreateWorkoutEntryForm = () => {
     // const data = new FormData(event.target);
 
     // console.log(`WorkoutName in handlesubmit: ${workoutName}`);
+  };
+  const handleWorkoutNameChange = event => {
+    setWorkoutName(event.target.value);
   };
   // Handles a change to the Locations filter on the left side of the page.
   // A change here will update formLocations to store what locations the workout is for.
@@ -398,7 +415,12 @@ const CreateWorkoutEntryForm = () => {
           <Grid className={classes.elementBackground} item xs={10}>
             {/* <Grid container justify="space-around"> */}
             <Paper className={classes.paper}>
-              <WorkoutName />
+              <div>
+                <NormalFormTextField
+                  labelName="Workout Name"
+                  handleChange={handleWorkoutNameChange}
+                />
+              </div>
             </Paper>
           </Grid>
           <Grid item xs={3}>
