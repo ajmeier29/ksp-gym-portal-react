@@ -93,6 +93,17 @@ const useStyles = makeStyles(theme => ({
   },
   datePicker: {
     color: 'white'
+  },
+  workoutFormDivParent: {
+    display: 'flex'
+  },
+  workoutDatePicker: {
+    'padding-left': '20px'
+  },
+  workoutTextField: {
+    'padding-top': '10px',
+    'padding-left': '20px',
+    width: '100%'
   }
 }));
 
@@ -174,6 +185,7 @@ const NormalFormTextField = props => {
         className={classes.margin}
         label={props.labelName}
         variant="outlined"
+        fullWidth
         id="custom-css-outlined-input"
         onChange={props.handleChange}
         InputLabelProps={{
@@ -191,55 +203,39 @@ NormalFormTextField.propTypes = {
   handleChange: PropTypes.func
 };
 
-const WorkoutName = props => {
+const NormalDatePicker = props => {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(
-    new Date('2014-08-18T21:11:54')
-  );
 
-  function handleDateChange(date) {
-    setSelectedDate(date);
-  }
   return (
     <>
-      <div>
-        <CssTextField
-          className={classes.margin}
-          label="Workout Name"
-          variant="outlined"
-          id="custom-css-outlined-input"
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {/* <Grid container justify="space-around"> */}
+        <CssDatePicker
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline"
+          label="Date picker inline"
+          value={props.selectedDate}
+          onChange={props.handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date'
+          }}
           InputLabelProps={{
             classes: {
-              root: classes.normalTextField
+              root: classes.datePicker
             }
           }}
         />
-      </div>
-      <div>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          {/* <Grid container justify="space-around"> */}
-          <CssDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            id="date-picker-inline"
-            label="Date picker inline"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              'aria-label': 'change date'
-            }}
-            InputLabelProps={{
-              classes: {
-                root: classes.datePicker
-              }
-            }}
-          />
-        </MuiPickersUtilsProvider>
-      </div>
+      </MuiPickersUtilsProvider>
     </>
   );
+};
+
+NormalDatePicker.propTypes = {
+  selectedDate: PropTypes.instanceOf(Date),
+  handleDateChange: PropTypes.func
 };
 
 // The entire workout form assembled together
@@ -254,6 +250,13 @@ const CreateWorkoutEntryForm = () => {
   let [formSeries, setFormSeries] = useState([]); // Series to be submitted
   let [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
   const [workoutName, setWorkoutName] = useState('');
+  const [selectedDate, setSelectedDate] = useState(
+    new Date('2014-08-18T21:11:54')
+  );
+
+  function handleDateChange(date) {
+    setSelectedDate(date);
+  }
 
   const handleSubmit = event => {
     const loc = formLocations;
@@ -333,28 +336,36 @@ const CreateWorkoutEntryForm = () => {
           <Grid className={classes.elementBackground} item xs={10}>
             {/* <Grid container justify="space-around"> */}
             <Paper className={classes.paper}>
-              <div>
-                <NormalFormTextField
-                  labelName="Workout Name"
-                  handleChange={handleWorkoutNameChange}
-                />
+              <div className={classes.workoutFormDivParent}>
+                <div className={classes.workoutDatePicker}>
+                  <NormalDatePicker
+                    selectedDate={selectedDate}
+                    handleDateChange={handleDateChange}
+                  />
+                </div>
+                <div className={classes.workoutTextField}>
+                  <NormalFormTextField
+                    labelName="Workout Name"
+                    handleChange={handleWorkoutNameChange}
+                  />
+                </div>
               </div>
             </Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid className={classes.elementBackground} item xs={2}>
+            {/* <Paper className={classes.paper}>xs=3</Paper> */}
+          </Grid>
+          <Grid className={classes.elementBackground} item xs={10}>
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>xs=3</Paper>
-          </Grid>
-          <Grid item xs={3}>
+          {/* <Grid item xs={3}>
             <Paper className={classes.paper}>xs=3</Paper>
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>
               <button>Submit</button>
             </Paper>
-          </Grid>
+          </Grid> */}
         </Grid>
       </form>
     </div>
