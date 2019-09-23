@@ -278,109 +278,78 @@ const CreateWorkoutEntryForm = () => {
   };
   return (
     <>
-      {/* <div className={classes.root}>
-        asdf
-      </div> */}
-      <div className={classes.root}>
-        <Grid container spacing={2}>
-          <Grid
-            className={classes.elementBackground}
-            item
-            xl={2}
-            lg={3}
-            md={3}
-            sm={6}
-            xs={12}
-          >
-            <Paper>
-              <FilterSelectionComponent
-                locations={locations}
-                locationHandleFn={handleLocationChange}
-                devices={devices}
-                devicesHandleFn={handleDeviceChange}
-              />
-            </Paper>
-          </Grid>
-          <Grid
-            className={classes.elementBackground}
-            item
-            xl={2}
-            lg={2}
-            md={3}
-            sm={6}
-            xs={12}
-          >
-            {/* <Grid container justify="space-around"> */}
-            <Paper className={classes.paper}>
-              <div className={classes.workoutFormDivParent}>
-                {/* <div className={classes.workoutDatePicker}> */}
-                <NormalDatePicker
-                  selectedDate={selectedDate}
-                  handleDateChange={handleDateChange}
-                />
-              </div>
-              {/* <div className={classes.workoutTextField}>
-                  <NormalFormTextField
-                    labelName="Workout Name"
-                    handleChange={handleWorkoutNameChange}
-                  />
-                </div>
-              </div> */}
-            </Paper>
-          </Grid>
-          <Grid
-            className={classes.elementBackground}
-            item
-            xl={8}
-            lg={7}
-            md={6}
-            sm={12}
-            xs={12}
-          >
-            <Paper className={classes.paper}>
-              <div className={classes.workoutTextField}>
-                <NormalFormTextField
-                  labelName="Workout Name"
-                  handleChange={handleWorkoutNameChange}
-                />
-              </div>
-            </Paper>
-          </Grid>
-          <SeriesGrid series_number={1} />
-          <SeriesGrid series_number={2} />
-          <SeriesGrid series_number={3} />
-          <Grid
-            justify="flex-end"
-            className={classes.elementBackground}
-            item
-            xl={8}
-            lg={7}
-            md={6}
-            sm={12}
-            xs={12}
-          >
-            <Button
-              variant="contained"
-              className={classes.button}
-              onClick={handleSubmit}
-            >
-              Default
-            </Button>
-          </Grid>
-          {/* <Grid className={classes.elementBackground} item xl={12} lg={12} md={12} sm={12} xs={12}>
-            <Paper className={classes.paper}>
-              <div className={classes.workoutTextField}>
-                <NormalFormTextField
-                  labelName="Series Info"
-                  handleChange={handleWorkoutNameChange}
-                />
-              </div>
-            </Paper>
-          </Grid> */}
-        </Grid>
+      <div className={classes.mainWrapper}>
+        <div className={classes.sidebar}>
+          <Paper>
+            <FilterSelectionComponent
+              locations={locations}
+              locationHandleFn={handleLocationChange}
+              devices={devices}
+              devicesHandleFn={handleDeviceChange}
+            />
+          </Paper>
+        </div>
+        <div className={classes.formgrid}>
+          <WorkoutSelectors
+            selectedDate={selectedDate}
+            handleDateChange={handleDateChange}
+            handleWorkoutNameChange={handleWorkoutNameChange}
+          />
+        </div>
+        <div className={classes.box3}>
+          {/* <WorkoutSelectors selectedDate={selectedDate} handleDateChange={handleDateChange} handleWorkoutNameChange={handleWorkoutNameChange} /> */}
+        </div>
       </div>
     </>
   );
+};
+
+const WorkoutSelectors = props => {
+  const classes = useStyles();
+  return (
+    <>
+      <div className={classes.workoutItemWrapper}>
+        <div className={classes.workoutDate}>
+          <Paper className={classes.paper}>
+            <div className={classes.workoutFormDivParent}>
+              {/* <div className={classes.workoutDatePicker}> */}
+              <NormalDatePicker
+                selectedDate={props.selectedDate}
+                handleDateChange={props.handleDateChange}
+              />
+            </div>
+          </Paper>
+        </div>
+        <div className={classes.workoutName}>
+          <Paper className={classes.paper}>
+            <div className={classes.workoutTextField}>
+              <NormalFormTextField
+                labelName="Workout Name"
+                handleChange={props.handleWorkoutNameChange}
+              />
+            </div>
+          </Paper>
+        </div>
+        {/* <SeriesGrid series_number={1} />
+        <SeriesGrid series_number={2} />
+        <SeriesGrid series_number={3} /> */}
+
+        {/* <Button
+          variant="contained"
+          className={classes.button}
+          onClick={handleSubmit}
+        >
+          Default
+            </Button> */}
+      </div>
+    </>
+  );
+};
+
+WorkoutSelectors.propTypes = {
+  selectedDate: PropTypes.instanceOf(Date),
+  handleDateChange: PropTypes.func,
+  handleWorkoutNameChange: PropTypes.func
 };
 
 const SeriesGrid = props => {

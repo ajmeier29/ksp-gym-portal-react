@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
   },
   workoutTextField: {
     'padding-top': '10px',
+    'padding-bottom': '7px',
     textAlign: 'left'
     //   'padding-left': '20px',
     //   width: '100%'s
@@ -66,7 +67,36 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     'padding-top': '15px'
   },
-  filterPanel: {}
+  mainWrapper: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr',
+    'grid-template-rows': '100px 100px',
+    'grid-gap': '50px',
+    margin: '50px'
+  },
+  sidebar: {
+    'grid-column': '1/2',
+    'grid-row': '1'
+  },
+  formgrid: {
+    'grid-column': '2/14',
+    'grid-row': '1/2'
+  },
+  workoutItemWrapper: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr',
+    'grid-template-rows': '100px 100px',
+    'grid-gap': '10px',
+    margin: '10px'
+  },
+  workoutDate: {
+    'grid-column': '1/2',
+    'grid-row': '1'
+  },
+  workoutName: {
+    'grid-column': '2/4',
+    'grid-row': '1'
+  }
 }));
 
 export { useStyles, seriesHeadingTheme };
