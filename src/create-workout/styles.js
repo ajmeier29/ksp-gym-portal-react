@@ -1,14 +1,25 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core';
 import purple from '@material-ui/core/colors/purple';
-import { grey } from '@material-ui/core/colors';
+import { grey, blueGrey } from '@material-ui/core/colors';
 
 const seriesHeadingTheme = createMuiTheme({
   palette: {
-    primary: { main: grey[500] }
+    primary: { main: grey[500] },
+    secondary: { main: grey[700] }
   },
   status: {
-    danger: 'orange'
+    danger: 'white'
+  },
+  direction: 'rtl'
+});
+
+const iconTheme = createMuiTheme({
+  palette: {
+    primary: { main: blueGrey[50] }
+  },
+  status: {
+    danger: 'white'
   },
   direction: 'rtl'
 });
@@ -21,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: 'left',
     //   padding: theme.spacing(2),
     //   textAlign: 'left', // This is what justifys all the content in the Paper....not just text
     'background-color': '#383838'
@@ -82,21 +93,39 @@ const useStyles = makeStyles(theme => ({
     'grid-column': '2/14',
     'grid-row': '1/2'
   },
-  workoutItemWrapper: {
+  gridParent: {
     display: 'grid',
     'grid-template-columns': '1fr 1fr 1fr',
-    'grid-template-rows': '100px 100px',
+    'grid-template-rows': '10px 100px',
     'grid-gap': '10px',
     margin: '10px'
   },
-  workoutDate: {
+  workoutDateGrid: {
     'grid-column': '1/2',
     'grid-row': '1'
   },
-  workoutName: {
+  workoutNameGrid: {
     'grid-column': '2/4',
     'grid-row': '1'
+  },
+  seriesGrid: {
+    'grid-column': '1/4',
+    'grid-row': '1'
+  },
+  exerciseNumberGrid: {
+    'grid-column': '1/2',
+    'grid-row': '1'
+  },
+  exerciseNameGrid: {
+    'grid-column': '2/3',
+    'grid-row': '1',
+    'margin-top': '39px'
+  },
+  exerciseRepsGrid: {
+    'grid-column': '3/3',
+    'grid-row': '1',
+    'margin-top': '39px'
   }
 }));
 
-export { useStyles, seriesHeadingTheme };
+export { useStyles, seriesHeadingTheme, iconTheme };
