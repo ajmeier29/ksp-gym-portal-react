@@ -16,8 +16,14 @@ import {
 } from './Workout-Side-Filter';
 import { useStyles, seriesHeadingTheme, iconTheme } from './styles.js';
 import { ThemeProvider } from '@material-ui/styles';
+import {
+  Exercise,
+  NormalFormTextField,
+  Series,
+  ControlPointAdd,
+  TypographyField
+} from './Workout-Fields.js';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
-import SvgIcon from '@material-ui/core/SvgIcon';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -61,30 +67,6 @@ const sourceDevices = [
     location: 'Bethlehem'
   }
 ];
-
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'white'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white'
-      },
-      '&:hover fieldset': {
-        borderColor: 'white'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white'
-      },
-      flexGrow: 1,
-      color: 'white'
-    }
-  }
-})(TextField);
 
 const CssDatePicker = withStyles({
   root: {
@@ -132,32 +114,6 @@ const CssDatePicker = withStyles({
   }
 })(KeyboardDatePicker);
 
-const NormalFormTextField = props => {
-  const classes = useStyles();
-  return (
-    <>
-      <CssTextField
-        className={classes.margin}
-        label={props.labelName}
-        variant="outlined"
-        fullWidth
-        id="custom-css-outlined-input"
-        onChange={props.handleChange}
-        InputLabelProps={{
-          classes: {
-            root: classes.normalTextField
-          }
-        }}
-      />
-    </>
-  );
-};
-
-NormalFormTextField.propTypes = {
-  labelName: PropTypes.string,
-  handleChange: PropTypes.func
-};
-
 const NormalDatePicker = props => {
   const classes = useStyles();
 
@@ -200,10 +156,10 @@ const CreateWorkoutEntryForm = () => {
   const [locations] = useState(sourceLocations); // Locations in NoSQL database
   const [devices, setDevices] = useState([]); // Devices in NoSQL database
   const [formLocations, setFormLocations] = useState([]); // Locations to be submitted
-  let [formDevices, setFormDevices] = useState([]); // Devices to be submitted
-  let [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
-  let [formSeries, setFormSeries] = useState([]); // Series to be submitted
-  let [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
+  const [formDevices, setFormDevices] = useState([]); // Devices to be submitted
+  const [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
+  const [formSeries, setFormSeries] = useState([]); // Series to be submitted
+  const [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(
     new Date('2014-08-18T21:11:54')
@@ -237,6 +193,17 @@ const CreateWorkoutEntryForm = () => {
     let tempList = formExercises;
     tempList.push(ex);
     setFormExercises([...tempList]);
+  };
+
+  const handleSeriesAdd = () => {
+    let ex = {
+      id: formSeries.length + 1,
+      series_tag: '',
+      exercises: []
+    };
+    let tempList = formSeries;
+    tempList.push(ex);
+    setFormSeries([...tempList]);
   };
 
   const handleSeriesSubmit = serieslist => {
@@ -309,12 +276,26 @@ const CreateWorkoutEntryForm = () => {
             handleDateChange={handleDateChange}
             handleWorkoutNameChange={handleWorkoutNameChange}
           />
+          <ThemeProvider theme={iconTheme}>
+            <ControlPointIcon color="primary" onClick={handleSeriesAdd} />
+            {<TypographyField title={'Add Series'} h={'h8'} />}
+          </ThemeProvider>
           <div className={classes.gridParent}>
-            <Series
+            {/* <Series
               exercises={formExercises}
-              series_number={'1'}
+              series_number={'8'}
               handleExerciseAdd={handleExerciseAdd}
-            />
+            /> */}
+
+            {formSeries.map((currElement, index) => (
+              <>
+                <Series
+                  exercises={formExercises}
+                  series_number={currElement.id}
+                  handleExerciseAdd={handleExerciseAdd}
+                />
+              </>
+            ))}
           </div>
         </div>
       </div>
@@ -358,155 +339,6 @@ WorkoutSelectors.propTypes = {
   handleDateChange: PropTypes.func,
   handleWorkoutNameChange: PropTypes.func
 };
-
-const Series = props => {
-  const classes = useStyles();
-  return (
-    <>
-      <div className={classes.seriesGrid}>
-        <Paper className={classes.paper}>
-          <ThemeProvider theme={seriesHeadingTheme}>
-            <Typography
-              textAlign="left"
-              variant="h5"
-              color="primary"
-              gutterBottom
-            >
-              Series {props.series_number}
-            </Typography>
-          </ThemeProvider>
-          <div className={classes.workoutTextField}>
-            <NormalFormTextField
-              labelName="Series Tag"
-              handleChange={props.handlSeriesChange}
-            />
-          </div>
-          {props.exercises.map((currElement, index) => (
-            <>
-              <Exercise exercise_number={index + 1} />
-            </>
-          ))}
-          <ThemeProvider theme={iconTheme}>
-            <ControlPointIcon
-              color="primary"
-              onClick={props.handleExerciseAdd}
-            />
-          </ThemeProvider>
-        </Paper>
-      </div>
-    </>
-  );
-};
-Series.propTypes = {
-  handlSeriesChange: PropTypes.func,
-  series_number: PropTypes.string,
-  handleExerciseAdd: PropTypes.func,
-  exercises: PropTypes.array
-};
-
-const Exercise = props => {
-  const classes = useStyles();
-  return (
-    <>
-      <div className={classes.gridParent}>
-        <div className={classes.exerciseNumberGrid}>
-          <ThemeProvider theme={seriesHeadingTheme}>
-            <Typography
-              textAlign="left"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
-              Exercise {props.exercise_number}
-            </Typography>
-          </ThemeProvider>
-          <div className={classes.workoutTextField}>
-            <NormalFormTextField
-              labelName="Exercise Number"
-              handleChange={props.handleExerciseChange}
-            />
-          </div>
-        </div>
-        <div className={classes.exerciseNameGrid}>
-          <div className={classes.workoutTextField}>
-            <NormalFormTextField
-              labelName="Exercise Name"
-              handleChange={props.handleExerciseChange}
-            />
-          </div>
-        </div>
-        <div className={classes.exerciseRepsGrid}>
-          <div className={classes.workoutTextField}>
-            <NormalFormTextField
-              labelName="Exercise Reps"
-              handleChange={props.handleExerciseChange}
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-Exercise.propTypes = {
-  exercise_number: PropTypes.number,
-  handleExerciseChange: PropTypes.func
-};
-
-const SeriesGrid = props => {
-  const classes = useStyles();
-
-  return (
-    <Grid container spacing={2} item xl={12} lg={12} md={12} sm={12} xs={12}>
-      <Grid
-        spacing={2}
-        direction={'column'}
-        className={classes.elementBackground}
-        item
-        xl={2}
-        lg={3}
-        md={3}
-        sm={6}
-        xs={12}
-      ></Grid>
-      <Grid
-        spacing={2}
-        direction={'column'}
-        className={classes.elementBackground}
-        item
-        xl={2}
-        lg={2}
-        md={12}
-        sm={12}
-        xs={12}
-      >
-        <Paper className={classes.paper}>
-          <div className={classes.workoutTextField}>
-            <ThemeProvider theme={seriesHeadingTheme}>
-              <Typography
-                textAlign="left"
-                variant="h5"
-                color="primary"
-                gutterBottom
-              >
-                Series {props.series_number}
-              </Typography>
-            </ThemeProvider>
-            <NormalFormTextField labelName="Series Tag" />
-          </div>
-        </Paper>
-      </Grid>
-      <Exercise exercise_number={1} />
-      <Exercise exercise_number={2} />
-      <Exercise exercise_number={3} />
-      <Exercise exercise_number={4} />
-    </Grid>
-  );
-};
-SeriesGrid.propTypes = {
-  series_number: PropTypes.number
-};
-
 // const Exercise = props => {
 //   const classes = useStyles();
 //   return (
@@ -542,30 +374,30 @@ SeriesGrid.propTypes = {
 //   );
 // };
 
-const ExerciseFormTextField = props => {
-  const classes = useStyles();
-  return (
-    <>
-      <CssTextField
-        className={classes.workoutReps}
-        label={props.labelName}
-        variant="outlined"
-        fullWidth
-        id="custom-css-outlined-input"
-        onChange={props.handleChange}
-        InputLabelProps={{
-          classes: {
-            root: classes.workoutReps
-          }
-        }}
-      />
-    </>
-  );
-};
+// const ExerciseFormTextField = props => {
+//   const classes = useStyles();
+//   return (
+//     <>
+//       <CssTextField
+//         className={classes.workoutReps}
+//         label={props.labelName}
+//         variant="outlined"
+//         fullWidth
+//         id="custom-css-outlined-input"
+//         onChange={props.handleChange}
+//         InputLabelProps={{
+//           classes: {
+//             root: classes.workoutReps
+//           }
+//         }}
+//       />
+//     </>
+//   );
+// };
 
-ExerciseFormTextField.propTypes = {
-  labelName: PropTypes.string,
-  handleChange: PropTypes.func
-};
+// ExerciseFormTextField.propTypes = {
+//   labelName: PropTypes.string,
+//   handleChange: PropTypes.func
+// };
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm, useStyles };
