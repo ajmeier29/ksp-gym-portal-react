@@ -1,6 +1,9 @@
 import React from 'react';
 // import {TestWorkoutData} from './test-data.js';
-import { WorkoutExpandableTable, FilterForm } from './workout-table.js';
+import {
+  WorkoutExpandableTable,
+  FilterForm
+} from './show-workout/Show-Workouts';
 // import NavBar from './navbar.js';
 import { makeStyles } from '@material-ui/core/styles';
 

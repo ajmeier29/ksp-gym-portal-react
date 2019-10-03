@@ -386,9 +386,6 @@ const Series = props => {
               <Exercise exercise_number={index + 1} />
             </>
           ))}
-          {/* <Exercise exercise_number={'1'} />
-          <Exercise exercise_number={'2'} />
-          <Exercise exercise_number={'3'} /> */}
           <ThemeProvider theme={iconTheme}>
             <ControlPointIcon
               color="primary"
