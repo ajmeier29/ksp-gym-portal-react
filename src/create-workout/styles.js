@@ -96,7 +96,8 @@ const useStyles = makeStyles(theme => ({
   gridParent: {
     display: 'grid',
     'grid-template-columns': '1fr 1fr 1fr',
-    'grid-template-rows': '10px 100px',
+    // 'grid-template-rows': '10px 100px',
+    'grid-auto-rows': 'minmax(100px, auto)',
     'grid-gap': '10px',
     margin: '10px'
   },
@@ -109,8 +110,8 @@ const useStyles = makeStyles(theme => ({
     'grid-row': '1'
   },
   seriesGrid: {
-    'grid-column': '1/4',
-    'grid-row': '1'
+    'grid-column': '1/4'
+    // 'grid-row': '1'
   },
   exerciseNumberGrid: {
     'grid-column': '1/2',

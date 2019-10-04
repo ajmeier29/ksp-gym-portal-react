@@ -9,6 +9,20 @@ import { useStyles, seriesHeadingTheme, iconTheme } from './styles.js';
 const Series = props => {
   const classes = useStyles();
   const seriesTitle = 'Series ' + props.series_number;
+  const [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
+
+  // Add empty exercise to list when plus button is clicked
+  const handleExerciseAdd = () => {
+    let ex = {
+      id: formExercises.length + 1,
+      name: '',
+      reps: ''
+    };
+    let tempList = formExercises;
+    tempList.push(ex);
+    setFormExercises([...tempList]);
+  };
+
   return (
     <>
       <div className={classes.seriesGrid}>
@@ -22,14 +36,14 @@ const Series = props => {
               handleChange={props.handlSeriesChange}
             />
           </div>
-          {props.exercises.map((currElement, index) => (
+          {formExercises.map((currElement, index) => (
             <>
               <Exercise exercise_number={index + 1} />
             </>
           ))}
           {
             <ControlPointAdd
-              handleClick={props.handleExerciseAdd}
+              handleClick={handleExerciseAdd}
               title={'Add Exercise'}
             />
           }
@@ -40,9 +54,9 @@ const Series = props => {
 };
 Series.propTypes = {
   handlSeriesChange: PropTypes.func,
-  series_number: PropTypes.string,
-  handleExerciseAdd: PropTypes.func,
-  exercises: PropTypes.array
+  series_number: PropTypes.string
+  // handleExerciseAdd: PropTypes.func,
+  // exercises: PropTypes.array
 };
 
 const Exercise = props => {

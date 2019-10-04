@@ -159,7 +159,7 @@ const CreateWorkoutEntryForm = () => {
   const [formDevices, setFormDevices] = useState([]); // Devices to be submitted
   const [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
   const [formSeries, setFormSeries] = useState([]); // Series to be submitted
-  const [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
+  // const [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(
     new Date('2014-08-18T21:11:54')
@@ -183,26 +183,26 @@ const CreateWorkoutEntryForm = () => {
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
   };
-  // Add empty exercise to list when plus button is clicked
-  const handleExerciseAdd = () => {
-    let ex = {
-      id: formExercises.length + 1,
-      name: '',
-      reps: ''
-    };
-    let tempList = formExercises;
-    tempList.push(ex);
-    setFormExercises([...tempList]);
-  };
+  // // Add empty exercise to list when plus button is clicked
+  // const handleExerciseAdd = () => {
+  //   let ex = {
+  //     id: formExercises.length + 1,
+  //     name: '',
+  //     reps: ''
+  //   };
+  //   let tempList = formExercises;
+  //   tempList.push(ex);
+  //   setFormExercises([...tempList]);
+  // };
 
   const handleSeriesAdd = () => {
-    let ex = {
+    let series = {
       id: formSeries.length + 1,
       series_tag: '',
       exercises: []
     };
     let tempList = formSeries;
-    tempList.push(ex);
+    tempList.push(series);
     setFormSeries([...tempList]);
   };
 
@@ -290,9 +290,9 @@ const CreateWorkoutEntryForm = () => {
             {formSeries.map((currElement, index) => (
               <>
                 <Series
-                  exercises={formExercises}
+                  // exercises={formExercises}
                   series_number={currElement.id}
-                  handleExerciseAdd={handleExerciseAdd}
+                  // handleExerciseAdd={handleExerciseAdd}
                 />
               </>
             ))}
