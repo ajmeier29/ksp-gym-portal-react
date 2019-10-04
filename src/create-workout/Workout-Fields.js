@@ -23,6 +23,11 @@ const Series = props => {
     setFormExercises([...tempList]);
   };
 
+  const handleTag = () => {
+    console.log('INSIDE THE DAMN METHOD');
+    this.props.handleSeriesTagChange(props.series_number);
+  };
+
   return (
     <>
       <div className={classes.seriesGrid}>
@@ -33,7 +38,8 @@ const Series = props => {
           <div className={classes.workoutTextField}>
             <NormalFormTextField
               labelName="Series Tag"
-              handleChange={props.handlSeriesChange}
+              // handleChange={(event) => props.handleSeriesTagChange(event, props.series_number)}
+              handleChange={handleTag}
             />
           </div>
           {formExercises.map((currElement, index) => (
@@ -53,10 +59,8 @@ const Series = props => {
   );
 };
 Series.propTypes = {
-  handlSeriesChange: PropTypes.func,
+  handleSeriesTagChange: PropTypes.func,
   series_number: PropTypes.string
-  // handleExerciseAdd: PropTypes.func,
-  // exercises: PropTypes.array
 };
 
 const Exercise = props => {

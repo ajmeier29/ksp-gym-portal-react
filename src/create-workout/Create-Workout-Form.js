@@ -159,11 +159,31 @@ const CreateWorkoutEntryForm = () => {
   const [formDevices, setFormDevices] = useState([]); // Devices to be submitted
   const [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
   const [formSeries, setFormSeries] = useState([]); // Series to be submitted
-  // const [formExercises, setFormExercises] = useState([]); // Exercises to be submitted
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(
     new Date('2014-08-18T21:11:54')
   );
+
+  // ------ Series Changes
+  const handleSeriesAdd = () => {
+    let series = {
+      id: formSeries.length + 1,
+      series_tag: '',
+      exercises: []
+    };
+    let tempList = formSeries;
+    tempList.push(series);
+    setFormSeries([...tempList]);
+  };
+  const handleSeriesTagChange = e => {
+    console.log('INSIDE HANDL SERIES TAG CHANGE');
+    let actualId = 1; //id - 1;
+    // The id is the number in the array - 1
+    const tempArr = formSeries;
+    tempArr[actualId]['series_tag'] = e.target.value;
+    setFormSeries([...tempArr]);
+  };
+  // ------ End Series Changes
 
   function handleDateChange(date) {
     setSelectedDate(date);
@@ -183,32 +203,10 @@ const CreateWorkoutEntryForm = () => {
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
   };
-  // // Add empty exercise to list when plus button is clicked
-  // const handleExerciseAdd = () => {
-  //   let ex = {
-  //     id: formExercises.length + 1,
-  //     name: '',
-  //     reps: ''
-  //   };
-  //   let tempList = formExercises;
-  //   tempList.push(ex);
-  //   setFormExercises([...tempList]);
+
+  // const handleSeriesSubmit = serieslist => {
+  //   setFormSeries(serieslist);
   // };
-
-  const handleSeriesAdd = () => {
-    let series = {
-      id: formSeries.length + 1,
-      series_tag: '',
-      exercises: []
-    };
-    let tempList = formSeries;
-    tempList.push(series);
-    setFormSeries([...tempList]);
-  };
-
-  const handleSeriesSubmit = serieslist => {
-    setFormSeries(serieslist);
-  };
   // Handles a change to the Locations filter on the left side of the page.
   // A change here will update formLocations to store what locations the workout is for.
   const handleLocationChange = event => {
@@ -281,18 +279,11 @@ const CreateWorkoutEntryForm = () => {
             {<TypographyField title={'Add Series'} h={'h8'} />}
           </ThemeProvider>
           <div className={classes.gridParent}>
-            {/* <Series
-              exercises={formExercises}
-              series_number={'8'}
-              handleExerciseAdd={handleExerciseAdd}
-            /> */}
-
             {formSeries.map((currElement, index) => (
               <>
                 <Series
-                  // exercises={formExercises}
                   series_number={currElement.id}
-                  // handleExerciseAdd={handleExerciseAdd}
+                  handleSeriesTagChange={handleSeriesTagChange}
                 />
               </>
             ))}
@@ -311,7 +302,6 @@ const WorkoutSelectors = props => {
         <div className={classes.workoutDateGrid}>
           <Paper className={classes.paper}>
             <div className={classes.workoutFormDivParent}>
-              {/* <div className={classes.workoutDatePicker}> */}
               <NormalDatePicker
                 selectedDate={props.selectedDate}
                 handleDateChange={props.handleDateChange}
@@ -339,65 +329,5 @@ WorkoutSelectors.propTypes = {
   handleDateChange: PropTypes.func,
   handleWorkoutNameChange: PropTypes.func
 };
-// const Exercise = props => {
-//   const classes = useStyles();
-//   return (
-//     <>
-//       <Grid
-//         spacing={2}
-//         className={classes.elementBackground}
-//         item
-//         xl={2}
-//         lg={2}
-//         md={6}
-//         sm={12}
-//         xs={12}
-//       >
-//         <Paper className={classes.paper}>
-//           <div className={classes.workoutTextField}>
-//             <ThemeProvider theme={seriesHeadingTheme}>
-//               <Typography
-//                 textAlign="left"
-//                 variant="h5"
-//                 color="primary"
-//                 gutterBottom
-//               >
-//                 Exercise {props.exercise_number}
-//               </Typography>
-//             </ThemeProvider>
-//             <NormalFormTextField labelName="Exercise Name" />
-//             <ExerciseFormTextField labelName="Reps" />
-//           </div>
-//         </Paper>
-//       </Grid>
-//     </>
-//   );
-// };
-
-// const ExerciseFormTextField = props => {
-//   const classes = useStyles();
-//   return (
-//     <>
-//       <CssTextField
-//         className={classes.workoutReps}
-//         label={props.labelName}
-//         variant="outlined"
-//         fullWidth
-//         id="custom-css-outlined-input"
-//         onChange={props.handleChange}
-//         InputLabelProps={{
-//           classes: {
-//             root: classes.workoutReps
-//           }
-//         }}
-//       />
-//     </>
-//   );
-// };
-
-// ExerciseFormTextField.propTypes = {
-//   labelName: PropTypes.string,
-//   handleChange: PropTypes.func
-// };
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm, useStyles };
