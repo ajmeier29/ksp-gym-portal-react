@@ -175,13 +175,17 @@ const CreateWorkoutEntryForm = () => {
     tempList.push(series);
     setFormSeries([...tempList]);
   };
-  const handleSeriesTagChange = e => {
-    console.log('INSIDE HANDL SERIES TAG CHANGE');
-    let actualId = 1; //id - 1;
-    // The id is the number in the array - 1
-    const tempArr = formSeries;
-    tempArr[actualId]['series_tag'] = e.target.value;
-    setFormSeries([...tempArr]);
+
+  // Sets the series tag
+  const handleSeriesTagChange = id => event => {
+    const tempList = formSeries;
+    tempList[id - 1]['series_tag'] = event.target.value;
+    setFormSeries([...tempList]);
+  };
+  const handleExerciseChange = (seriesId, exerciseArr) => {
+    const tempList = formSeries;
+    tempList[seriesId - 1]['exercises'] = [...exerciseArr];
+    setFormSeries([...tempList]);
   };
   // ------ End Series Changes
 
@@ -192,6 +196,7 @@ const CreateWorkoutEntryForm = () => {
   const handleSubmit = event => {
     const loc = formLocations;
     const dev = formDevices;
+    const series = formSeries;
     const workoutname = workoutName;
 
     // event.preventDefault();
@@ -204,9 +209,6 @@ const CreateWorkoutEntryForm = () => {
     setWorkoutName(event.target.value);
   };
 
-  // const handleSeriesSubmit = serieslist => {
-  //   setFormSeries(serieslist);
-  // };
   // Handles a change to the Locations filter on the left side of the page.
   // A change here will update formLocations to store what locations the workout is for.
   const handleLocationChange = event => {
@@ -283,11 +285,22 @@ const CreateWorkoutEntryForm = () => {
               <>
                 <Series
                   series_number={currElement.id}
-                  handleSeriesTagChange={handleSeriesTagChange}
+                  handleTagChange={handleSeriesTagChange}
+                  handleExerciseChange={handleExerciseChange}
                 />
               </>
             ))}
           </div>
+          <ThemeProvider theme={iconTheme}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </ThemeProvider>
         </div>
       </div>
     </>

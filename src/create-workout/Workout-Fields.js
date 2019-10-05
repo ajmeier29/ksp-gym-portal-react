@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { Paper, Grid, TextField, Typography, Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import PropTypes from 'prop-types';
 import { useStyles, seriesHeadingTheme, iconTheme } from './styles.js';
+import { template } from '@babel/core';
 
 const Series = props => {
   const classes = useStyles();
@@ -22,11 +23,18 @@ const Series = props => {
     tempList.push(ex);
     setFormExercises([...tempList]);
   };
-
-  const handleTag = () => {
-    console.log('INSIDE THE DAMN METHOD');
-    this.props.handleSeriesTagChange(props.series_number);
+  // handles the change to an exercise attirbute and then
+  // saves the state
+  const handleExerciseChange = (id, type) => event => {
+    const tempList = formExercises;
+    tempList[id - 1][type] = event.target.value;
+    setFormExercises([...tempList]);
   };
+
+  // change the exercise state in parent if there is a change to the exercise
+  useEffect(() => {
+    props.handleExerciseChange(props.series_number, formExercises);
+  }, [formExercises]);
 
   return (
     <>
@@ -38,13 +46,15 @@ const Series = props => {
           <div className={classes.workoutTextField}>
             <NormalFormTextField
               labelName="Series Tag"
-              // handleChange={(event) => props.handleSeriesTagChange(event, props.series_number)}
-              handleChange={handleTag}
+              handleChange={props.handleTagChange(props.series_number)}
             />
           </div>
           {formExercises.map((currElement, index) => (
             <>
-              <Exercise exercise_number={index + 1} />
+              <Exercise
+                exercise_number={index + 1}
+                handleExerciseChange={handleExerciseChange}
+              />
             </>
           ))}
           {
@@ -59,7 +69,8 @@ const Series = props => {
   );
 };
 Series.propTypes = {
-  handleSeriesTagChange: PropTypes.func,
+  handleTagChange: PropTypes.func,
+  handleExerciseChange: PropTypes.func,
   series_number: PropTypes.string
 };
 
@@ -90,7 +101,10 @@ const Exercise = props => {
           <div className={classes.workoutTextField}>
             <NormalFormTextField
               labelName="Exercise Name"
-              handleChange={props.handleExerciseChange}
+              handleChange={props.handleExerciseChange(
+                props.exercise_number,
+                'name'
+              )}
             />
           </div>
         </div>
@@ -98,7 +112,10 @@ const Exercise = props => {
           <div className={classes.workoutTextField}>
             <NormalFormTextField
               labelName="Exercise Reps"
-              handleChange={props.handleExerciseChange}
+              handleChange={props.handleExerciseChange(
+                props.exercise_number,
+                'reps'
+              )}
             />
           </div>
         </div>
