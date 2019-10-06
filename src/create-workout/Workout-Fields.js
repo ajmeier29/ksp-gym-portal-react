@@ -15,7 +15,7 @@ const Series = props => {
   // Add empty exercise to list when plus button is clicked
   const handleExerciseAdd = () => {
     let ex = {
-      id: formExercises.length + 1,
+      exercise_number: formExercises.length + 1,
       name: '',
       reps: ''
     };

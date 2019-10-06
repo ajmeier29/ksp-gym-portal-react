@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import fetchJsonPromise from '../api/api-calls';
+import { fetchJsonPromise } from '../api/api-calls';
 import {
   Dropdown,
   DropdownButton,

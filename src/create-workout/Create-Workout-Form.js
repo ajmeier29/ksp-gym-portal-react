@@ -25,6 +25,7 @@ import {
   TypographyField
 } from './Workout-Fields.js';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
+import { postData } from '../api/api-calls';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -243,7 +244,7 @@ const CreateWorkoutEntryForm = () => {
   // ------ Series Changes
   const handleSeriesAdd = () => {
     let series = {
-      id: formSeries.length + 1,
+      series_number: formSeries.length + 1,
       series_tag: '',
       exercises: []
     };
@@ -285,14 +286,16 @@ const CreateWorkoutEntryForm = () => {
     const workout = {
       workout_name: workoutName,
       workout_date: workoutDateTime,
+      workout_image_url: 'www.youre-awesome.com',
       workout_series: formSeries
     };
-
-    // event.preventDefault();
-    // let test = event.currentTarget;
-    // const data = new FormData(event.target);
-
-    // console.log(`WorkoutName in handlesubmit: ${workoutName}`);
+    let jsondata = JSON.stringify(workout);
+    let test = process.env.REACT_APP_API_POST_WORKOUT;
+    let serverreply = '';
+    // post to server
+    postData(process.env.REACT_APP_API_POST_WORKOUT, workout).then(res => {
+      serverreply = res;
+    });
   };
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
@@ -375,7 +378,7 @@ const CreateWorkoutEntryForm = () => {
             {formSeries.map((currElement, index) => (
               <>
                 <Series
-                  series_number={currElement.id}
+                  series_number={currElement.series_number}
                   handleTagChange={handleSeriesTagChange}
                   handleExerciseChange={handleExerciseChange}
                 />

@@ -21,34 +21,25 @@ async function fetchJsonPromise(url) {
   const response = await fetch(url);
   return response.json();
 }
-export default fetchJsonPromise;
 
-// const WorkoutExpandableTable = props => {
-//     const [workoutinfo, setWorkoutinfo] = useState([]);
-//     const classes = panelStyles();
-//     const apiGetWorkouts = `${process.env.REACT_APP_API_GET_WORKOUTS_LIMIT}/3`;
-//     // Fetch the data on initial page load to default
-//     async function fetchData()
-//     {
-//       const response = await fetch(apiGetWorkouts);
-//       response
-//         .json()
-//         .then(res => setWorkoutinfo(res))
-//     }
-//     // Call fetch data one time.
-//     // We need to use ,[] at the end of useEffect() to make sure
-//     // it is only ran one time. Not sure if this is preffered and I'm not sure
-//     // if it will re render later when needed.
-//     useEffect(() => {
-//       fetchData();
-//     }, []);
-
-//     // const newData = data();
-//     return (
-//       <div className={classes.root}>
-//         {workoutinfo.map(workout => {
-//           return <WorkoutLineItem key={workout.id} workoutinfo={workout} />;
-//         })}
-//       </div>
-//     );
-//   };
+async function postData(url, data) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url);
+  xhr.send(JSON.stringify(data));
+  // // Default options are marked with *
+  // const response = await fetch(url, {
+  //   method: 'POST', // *GET, POST, PUT, DELETE, etc.
+  //   mode: 'cors', // no-cors, *cors, same-origin
+  //   //cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+  //   //credentials: 'same-origin', // include, *same-origin, omit
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //     // 'Content-Type': 'application/x-www-form-urlencoded',
+  //   },
+  //   //redirect: 'follow', // manual, *follow, error
+  //   //referrer: 'no-referrer', // no-referrer, *client
+  //   body: data // body data type must match "Content-Type" header
+  // });
+  // return await response.json(); // parses JSON response into native JavaScript objects
+}
+export { fetchJsonPromise, postData };
