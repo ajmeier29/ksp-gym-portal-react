@@ -5,7 +5,8 @@ import { withStyles } from '@material-ui/styles';
 import { Paper, Grid, TextField, Typography, Button } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker
+  KeyboardDatePicker,
+  KeyboardTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -114,6 +115,52 @@ const CssDatePicker = withStyles({
   }
 })(KeyboardDatePicker);
 
+const CssTimePicker = withStyles({
+  root: {
+    '& .MuiInput-root': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .Mui-focused': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-input': {
+      borderBottomColor: 'white'
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiInput-underline:before': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      flexGrow: 1,
+      color: 'white'
+    }
+  }
+})(KeyboardTimePicker);
+
 const NormalDatePicker = props => {
   const classes = useStyles();
 
@@ -122,12 +169,10 @@ const NormalDatePicker = props => {
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {/* <Grid container justify="space-around"> */}
         <CssDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
           margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
+          id="date-picker-dialog"
+          label="Date picker dialog"
+          format="MM/dd/yyyy"
           value={props.selectedDate}
           onChange={props.handleDateChange}
           KeyboardButtonProps={{
@@ -149,6 +194,38 @@ NormalDatePicker.propTypes = {
   handleDateChange: PropTypes.func
 };
 
+const NormalTimePicker = props => {
+  const classes = useStyles();
+
+  return (
+    <>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {/* <Grid container justify="space-around"> */}
+        <CssTimePicker
+          margin="normal"
+          id="time-picker"
+          label="Time picker"
+          value={props.selectedDate}
+          onChange={props.handleDateChange}
+          KeyboardButtonProps={{
+            'aria-label': 'change date'
+          }}
+          InputLabelProps={{
+            classes: {
+              root: classes.datePicker
+            }
+          }}
+        />
+      </MuiPickersUtilsProvider>
+    </>
+  );
+};
+
+NormalTimePicker.propTypes = {
+  selectedDate: PropTypes.instanceOf(Date),
+  handleDateChange: PropTypes.func
+};
+
 // The entire workout form assembled together
 const CreateWorkoutEntryForm = () => {
   const classes = useStyles();
@@ -160,9 +237,8 @@ const CreateWorkoutEntryForm = () => {
   const [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
   const [formSeries, setFormSeries] = useState([]); // Series to be submitted
   const [workoutName, setWorkoutName] = useState('');
-  const [selectedDate, setSelectedDate] = useState(
-    new Date('2014-08-18T21:11:54')
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState(new Date().setSeconds(0));
 
   // ------ Series Changes
   const handleSeriesAdd = () => {
@@ -193,11 +269,24 @@ const CreateWorkoutEntryForm = () => {
     setSelectedDate(date);
   }
 
+  const handleTimeChange = date => {
+    setSelectedTime(date);
+  };
+
   const handleSubmit = event => {
     const loc = formLocations;
     const dev = formDevices;
     const series = formSeries;
     const workoutname = workoutName;
+    const workoutDateTime = selectedDate;
+    // const wtime = selectedTime.getHours() + ':' + ((selectedTime.getMinutes() < 10) ? '0':'') + selectedTime.getMinutes();
+    workoutDateTime.setTime(selectedTime.getTime());
+
+    const workout = {
+      workout_name: workoutName,
+      workout_date: workoutDateTime,
+      workout_series: formSeries
+    };
 
     // event.preventDefault();
     // let test = event.currentTarget;
@@ -273,7 +362,9 @@ const CreateWorkoutEntryForm = () => {
         <div className={classes.formgrid}>
           <WorkoutSelectors
             selectedDate={selectedDate}
+            selectedTime={selectedTime}
             handleDateChange={handleDateChange}
+            handleTimeChange={handleTimeChange}
             handleWorkoutNameChange={handleWorkoutNameChange}
           />
           <ThemeProvider theme={iconTheme}>
@@ -319,6 +410,10 @@ const WorkoutSelectors = props => {
                 selectedDate={props.selectedDate}
                 handleDateChange={props.handleDateChange}
               />
+              <NormalTimePicker
+                selectedDate={props.selectedTime}
+                handleDateChange={props.handleTimeChange}
+              />
             </div>
           </Paper>
         </div>
@@ -339,7 +434,9 @@ const WorkoutSelectors = props => {
 
 WorkoutSelectors.propTypes = {
   selectedDate: PropTypes.instanceOf(Date),
+  selectedTime: PropTypes.string,
   handleDateChange: PropTypes.func,
+  handleTimeChange: PropTypes.func,
   handleWorkoutNameChange: PropTypes.func
 };
 
