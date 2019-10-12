@@ -31,12 +31,12 @@ import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 // REPLACE WITH WEB API CALL
 const sourceLocations = [
   {
-    id: '243q3r',
+    id: '5da228c501edb329bb43a972',
     name: 'Allentown',
     phone: '6013905742'
   },
   {
-    id: 'wfer43',
+    id: '5da228c501edb329bb41a972',
     name: 'Bethlehem',
     phone: '6103905742'
   }
@@ -44,28 +44,18 @@ const sourceLocations = [
 
 const sourceDevices = [
   {
-    id: 'xadfw213423',
-    name: 'Adult Device 1 Alt',
+    id: '5da228c501edb329bb49a972',
+    name: 'Allentown Device 1',
     location: 'Allentown'
   },
   {
-    id: 'asdfvv23431',
-    name: 'Adult Device 2 Alt',
+    id: '5da228c511edb329bb49a972',
+    name: 'Allentown Device 2',
     location: 'Allentown'
   },
   {
-    id: 'averv035',
-    name: 'Adult Device 1 Beth',
-    location: 'Bethlehem'
-  },
-  {
-    id: 'er68sdasd',
-    name: 'Adult Device 2 Beth',
-    location: 'Bethlehem'
-  },
-  {
-    id: '34r34q4f3f',
-    name: 'Intro Device Beth',
+    id: '5da228c521edb329bb49a972',
+    name: 'Bethlehem Intro Device',
     location: 'Bethlehem'
   }
 ];
@@ -293,6 +283,8 @@ const CreateWorkoutEntryForm = () => {
       workout_name: workoutName,
       workout_date: workoutDateTime,
       workout_image_url: 'www.youre-awesome.com',
+      locations: [...formLocations],
+      devices: [...formDevices],
       workout_series: [...formSeries]
     };
     let serverreply = '';
