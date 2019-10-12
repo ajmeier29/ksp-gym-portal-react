@@ -1,3 +1,5 @@
+import { resolve } from 'url';
+
 // const fetchJsonData = async (url, setStateFunction) => {
 //     // const api = fetch(apiLink);
 //     // api.json().then(res =>
@@ -22,10 +24,60 @@ async function fetchJsonPromise(url) {
   return response.json();
 }
 
-async function postData(url, data) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', url);
-  xhr.send(JSON.stringify(data));
+function parseJSON(response) {
+  return new Promise(resolve =>
+    response.json().then(json =>
+      resolve({
+        status: response.status,
+        ok: response.ok,
+        json
+      })
+    )
+  );
+}
+
+const alertmessage = message => {
+  alert(JSON.stringify(message));
+};
+
+const getOptions = data => {
+  return {
+    method: 'post',
+    headers: {
+      Accept: 'application/json; charset=utf-8',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  };
+
+  // await fetch(url, options)
+  // .then(parseJSON)
+  // .then(response => {
+  //   console.log(response)
+  //   if(response.status !== 200){
+  //     //const errormsg = response.json.meta.error;
+  //     alertmessage(response.json.errors)
+  //   }
+  //   else if(response.ok)
+  //   {
+  //     return response.json();
+  //   }
+  // if (response.ok) {
+  //   return response.json();
+  // } else {
+  //   const errormsg = response.json();
+  //   throw new Error(errormsg);
+  // }
+  // })
+  // .then(data => {
+  //   console.log("SUCESSFULLY IN THEN!")
+  // })
+  // .catch(error => {
+  //   console.log(`Error Happend: ${error.message}`)
+  // });
+  // var xhr = new XMLHttpRequest();
+  // xhr.open('POST', url);
+  // xhr.send(JSON.stringify(data));
   // // Default options are marked with *
   // const response = await fetch(url, {
   //   method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -41,5 +93,5 @@ async function postData(url, data) {
   //   body: data // body data type must match "Content-Type" header
   // });
   // return await response.json(); // parses JSON response into native JavaScript objects
-}
-export { fetchJsonPromise, postData };
+};
+export { fetchJsonPromise, getOptions, alertmessage, parseJSON };

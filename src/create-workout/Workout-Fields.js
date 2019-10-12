@@ -16,8 +16,8 @@ const Series = props => {
   const handleExerciseAdd = () => {
     let ex = {
       exercise_number: formExercises.length + 1,
-      name: '',
-      reps: ''
+      exercise_name: '',
+      exercise_reps: ''
     };
     let tempList = formExercises;
     tempList.push(ex);
@@ -103,7 +103,7 @@ const Exercise = props => {
               labelName="Exercise Name"
               handleChange={props.handleExerciseChange(
                 props.exercise_number,
-                'name'
+                'exercise_name'
               )}
             />
           </div>
@@ -114,7 +114,7 @@ const Exercise = props => {
               labelName="Exercise Reps"
               handleChange={props.handleExerciseChange(
                 props.exercise_number,
-                'reps'
+                'exercise_reps'
               )}
             />
           </div>

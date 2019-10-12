@@ -25,7 +25,7 @@ import {
   TypographyField
 } from './Workout-Fields.js';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
-import { postData } from '../api/api-calls';
+import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -266,12 +266,18 @@ const CreateWorkoutEntryForm = () => {
   };
   // ------ End Series Changes
 
-  function handleDateChange(date) {
+  const handleDateChange = date => {
     setSelectedDate(date);
-  }
+  };
 
   const handleTimeChange = date => {
-    setSelectedTime(date);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const newDateTime = new Date();
+    newDateTime.setDate(selectedDate.getDate());
+    newDateTime.setHours(hours);
+    newDateTime.setMinutes(minutes);
+    setSelectedDate(newDateTime);
   };
 
   const handleSubmit = event => {
@@ -281,21 +287,37 @@ const CreateWorkoutEntryForm = () => {
     const workoutname = workoutName;
     const workoutDateTime = selectedDate;
     // const wtime = selectedTime.getHours() + ':' + ((selectedTime.getMinutes() < 10) ? '0':'') + selectedTime.getMinutes();
-    workoutDateTime.setTime(selectedTime.getTime());
+    //workoutDateTime.setTime(selectedTime.getTime());
 
     const workout = {
       workout_name: workoutName,
       workout_date: workoutDateTime,
       workout_image_url: 'www.youre-awesome.com',
-      workout_series: formSeries
+      workout_series: [...formSeries]
     };
-    let jsondata = JSON.stringify(workout);
-    let test = process.env.REACT_APP_API_POST_WORKOUT;
     let serverreply = '';
     // post to server
-    postData(process.env.REACT_APP_API_POST_WORKOUT, workout).then(res => {
-      serverreply = res;
+    const postData = async () => {
+      return await fetch(
+        process.env.REACT_APP_API_POST_WORKOUT,
+        getOptions(workout)
+      );
+    };
+    let theactualresponse = {};
+    const response = postData();
+    response.then(parseJSON).then(res => {
+      if (res.status !== 200) {
+        alertmessage(res.json.errors);
+      } else if (res.ok) {
+        theactualresponse = res.json;
+      }
     });
+
+    // const testdata = postData(process.env.REACT_APP_API_POST_WORKOUT, workout).then(res => {
+    //   serverreply = res.json();
+    //   var asdfaw = "";
+    // });
+    var teste = '';
   };
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
