@@ -18,6 +18,14 @@ import {
   Form,
   ButtonToolbar
 } from 'react-bootstrap';
+import { ThemeProvider } from '@material-ui/styles';
+import {
+  NormalFormTextField,
+  TypographyField
+} from '../create-workout/Workout-Fields';
+import { useStyles, editButtonTheme, summaryText } from './styles';
+import { Paper, Button } from '@material-ui/core';
+import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 
 const panelStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +36,7 @@ const panelStyles = makeStyles(theme => ({
     padding: '5px',
     'border-radius': '2x',
     'justify-content': 'center',
-    'background-color': '#383838'
+    'background-color': '#484848'
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -148,15 +156,50 @@ WorkoutExpandableTable.propTypes = {
   workoutinfo: PropTypes.object
 };
 
+const paperWrapper = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    'margin-top': '0px',
+    margin: 'left',
+    outline: 0,
+    padding: '5px',
+    // 'border-radius': '2x',
+    // 'justify-content': 'center',
+    'background-color': '#484848'
+  },
+  text: {
+    'background-color': '#484848'
+  },
+  button: {},
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular
+  },
+  summary: {
+    'background-color': '#484848',
+    color: 'black'
+  }
+}));
+
 // Component Description:
 //    Each individual line item in the workout list
 const WorkoutLineItem = props => {
   const classes = panelStyles();
+  const paperStyles = useStyles();
   const workoutName = `Workout Name: ${props.workoutinfo.workout_name}`;
   const workoutDate = `Workout Date: ${new Date(
     props.workoutinfo.workout_date
   ).toLocaleString()}`;
   const workoutHeader = `${workoutName} | ${workoutDate}`;
+
+  const handleDelete = () => {
+    // const postData = async () => {
+    //   return await fetch(
+    //     process.env.REACT_APP_API_POST_WORKOUT,
+    //     getOptions(workout)
+    //   );
+    // };
+  };
 
   return (
     <ExpansionPanel className={classes.summary + ' rounded'}>
@@ -167,14 +210,24 @@ const WorkoutLineItem = props => {
       >
         <Typography className={classes.heading}>{workoutHeader}</Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.summary}>
-        <Typography>
-          {props.workoutinfo.workout_series.map(series => (
-            <>
-              <Series series={series} />
-            </>
-          ))}
-        </Typography>
+      <ExpansionPanelDetails>
+        <div className={paperStyles.root}>
+          <Paper className={paperStyles.paper}>
+            <WorkoutSummary data={props.workoutinfo} />
+          </Paper>
+          <Paper className={paperStyles.paper}>
+            <ThemeProvider theme={editButtonTheme}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={''}
+              >
+                Delete
+              </Button>
+            </ThemeProvider>
+          </Paper>
+        </div>
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );
@@ -182,6 +235,82 @@ const WorkoutLineItem = props => {
 
 WorkoutLineItem.propTypes = {
   workoutinfo: PropTypes.object
+};
+
+// Make changes to string to replace values,
+// while titleizing
+const cleanandtitle = value => {
+  if (typeof value === 'string') {
+    return titleize(value.replace(/_/g, ' '));
+  } else {
+    return value;
+  }
+};
+
+const titleize = sentence => {
+  if (!sentence.split) return sentence;
+  var _titleizeWord = function(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    },
+    result = [];
+  sentence.split(' ').forEach(function(w) {
+    result.push(_titleizeWord(w));
+  });
+  return result.join(' ');
+};
+
+const WorkoutSummary = props => {
+  return (
+    <>
+      {Object.entries(props.data).map((key, value) => {
+        const keyTitle = cleanandtitle(key[0]);
+        if (Array.isArray(key[1])) {
+          return (
+            <>
+              <li>
+                {keyTitle}:
+                <ul>
+                  <WorkoutSummary
+                    data={key[1]}
+                    useparent={false}
+                    parentname={key[0]}
+                  />
+                </ul>
+              </li>
+            </>
+          );
+        } else if (typeof key[1] === 'object') {
+          return (
+            <>
+              <ul>
+                <WorkoutSummary data={key[1]} parentname={key[0]} />
+              </ul>
+            </>
+          );
+        } else if (
+          keyTitle.toLowerCase().includes('id') ||
+          keyTitle.toLowerCase().includes('_id')
+        ) {
+          const doNothing = '';
+        } else {
+          return (
+            <>
+              <li key={keyTitle}>
+                {props.useparent === undefined
+                  ? keyTitle + ':'
+                  : props.useparent
+                  ? props.parentname
+                  : props.parentname === undefined
+                  ? keyTitle + ':'
+                  : ''}{' '}
+                {key[1]}
+              </li>
+            </>
+          );
+        }
+      })}
+    </>
+  );
 };
 
 // Component Description:
