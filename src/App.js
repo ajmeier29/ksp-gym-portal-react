@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import {TestWorkoutData} from './test-data.js';
 import {
   WorkoutExpandableTable,
@@ -6,7 +6,7 @@ import {
 } from './show-workout/Show-Workouts';
 // import NavBar from './navbar.js';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { NewWorkoutSummary } from './create-workout/New-Workout-Summary';
 import { CreateWorkoutForm } from './create-workout/Create-Workout-Form';
 import {
   Navbar,
@@ -23,6 +23,7 @@ import {
   NavLink,
   Route
 } from 'react-router-dom';
+import { Redirect } from 'react-router';
 const outerDivStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -56,6 +57,8 @@ const navBarStyle = makeStyles(theme => ({
 }));
 
 const NavBar = props => {
+  // const [newWorkoutRedirect, setNewWorkoutRedirect] = useState(false);
+
   return (
     <Router>
       <Navbar bg="transparent" variant="dark" expand="lg">
@@ -92,6 +95,7 @@ const NavBar = props => {
         exact
         component={CreateWorkoutForm}
       />
+      <Route path="/new-workout-summary" exact component={NewWorkoutSummary} />
     </Router>
   );
 };

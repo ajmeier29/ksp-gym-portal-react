@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/styles';
-import { Paper, Grid, TextField, Typography, Button } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -15,13 +14,11 @@ import {
   containsObject,
   deviceCheckboxProcedures
 } from './Workout-Side-Filter';
-import { useStyles, seriesHeadingTheme, iconTheme } from './styles.js';
+import { useStyles, iconTheme } from './styles.js';
 import { ThemeProvider } from '@material-ui/styles';
 import {
-  Exercise,
   NormalFormTextField,
   Series,
-  ControlPointAdd,
   TypographyField
 } from './Workout-Fields.js';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
@@ -218,7 +215,7 @@ NormalTimePicker.propTypes = {
 };
 
 // The entire workout form assembled together
-const CreateWorkoutEntryForm = () => {
+const CreateWorkoutEntryForm = props => {
   const classes = useStyles();
 
   const [locations] = useState(sourceLocations); // Locations in NoSQL database
@@ -270,15 +267,8 @@ const CreateWorkoutEntryForm = () => {
     setSelectedDate(newDateTime);
   };
 
-  const handleSubmit = event => {
-    const loc = formLocations;
-    const dev = formDevices;
-    const series = formSeries;
-    const workoutname = workoutName;
+  const handleSubmit = () => {
     const workoutDateTime = selectedDate;
-    // const wtime = selectedTime.getHours() + ':' + ((selectedTime.getMinutes() < 10) ? '0':'') + selectedTime.getMinutes();
-    //workoutDateTime.setTime(selectedTime.getTime());
-
     const workout = {
       workout_name: workoutName,
       workout_date: workoutDateTime,
@@ -287,7 +277,6 @@ const CreateWorkoutEntryForm = () => {
       devices: [...formDevices],
       workout_series: [...formSeries]
     };
-    let serverreply = '';
     // post to server
     const postData = async () => {
       return await fetch(
@@ -302,14 +291,12 @@ const CreateWorkoutEntryForm = () => {
         alertmessage(res.json.errors);
       } else if (res.ok) {
         theactualresponse = res.json;
+        props.history.push({
+          pathname: '/new-workout-summary',
+          state: { posted_date: theactualresponse }
+        });
       }
     });
-
-    // const testdata = postData(process.env.REACT_APP_API_POST_WORKOUT, workout).then(res => {
-    //   serverreply = res.json();
-    //   var asdfaw = "";
-    // });
-    var teste = '';
   };
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
