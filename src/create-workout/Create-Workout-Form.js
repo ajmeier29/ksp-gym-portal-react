@@ -284,6 +284,10 @@ const CreateWorkoutEntryForm = props => {
         getOptions(workout)
       );
     };
+    props.history.push({
+      // pathname: '/new-workout-summary',
+      pathname: '/loading'
+    });
     const response = postData();
     response.then(parseJSON).then(res => {
       if (res.status !== 200) {

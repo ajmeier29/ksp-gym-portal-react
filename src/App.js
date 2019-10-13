@@ -8,6 +8,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { NewWorkoutSummary } from './create-workout/New-Workout-Summary';
 import { CreateWorkoutForm } from './create-workout/Create-Workout-Form';
+import LoadingDots from './create-workout/Loading';
 import {
   Navbar,
   Nav,
@@ -57,7 +58,7 @@ const navBarStyle = makeStyles(theme => ({
 }));
 
 const NavBar = props => {
-  // const [newWorkoutRedirect, setNewWorkoutRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Router>
@@ -96,6 +97,7 @@ const NavBar = props => {
         component={CreateWorkoutForm}
       />
       <Route path="/new-workout-summary" exact component={NewWorkoutSummary} />
+      <Route path="/loading" exact component={LoadingDots} />
     </Router>
   );
 };
