@@ -284,16 +284,14 @@ const CreateWorkoutEntryForm = props => {
         getOptions(workout)
       );
     };
-    let theactualresponse = {};
     const response = postData();
     response.then(parseJSON).then(res => {
       if (res.status !== 200) {
         alertmessage(res.json.errors);
       } else if (res.ok) {
-        theactualresponse = res.json;
         props.history.push({
           pathname: '/new-workout-summary',
-          state: { posted_date: theactualresponse }
+          state: { posted_date: res.json }
         });
       }
     });
