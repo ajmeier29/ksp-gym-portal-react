@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
-import { Paper, Button } from '@material-ui/core';
+import {
+  Paper,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
+} from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -23,6 +33,7 @@ import {
 } from './Workout-Fields.js';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
+import { makeStyles } from '@material-ui/core/styles';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -404,6 +415,60 @@ const CreateWorkoutEntryForm = props => {
   );
 };
 
+const listStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
+  }
+}));
+
+const SelectedTimes = props => {
+  const classes = listStyles();
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
+  return (
+    <>
+      <div className={classes.root}>
+        <List component="nav" aria-label="main mailbox folders">
+          <ListItem
+            button
+            selected={selectedIndex === 0}
+            onClick={event => handleListItemClick(event, 0)}
+          >
+            {'5:00PM'}
+          </ListItem>
+          <ListItem
+            button
+            selected={selectedIndex === 1}
+            onClick={event => handleListItemClick(event, 1)}
+          >
+            {'6:00PM'}
+          </ListItem>
+          <ListItem
+            button
+            selected={selectedIndex === 1}
+            onClick={event => handleListItemClick(event, 1)}
+          >
+            {'6:00PM'}
+          </ListItem>
+          <ListItem
+            button
+            selected={selectedIndex === 1}
+            onClick={event => handleListItemClick(event, 1)}
+          >
+            {'6:00PM'}
+          </ListItem>
+        </List>
+        {/* <Divider /> */}
+      </div>
+    </>
+  );
+};
+
 const WorkoutSelectors = props => {
   const classes = useStyles();
   return (
@@ -411,15 +476,27 @@ const WorkoutSelectors = props => {
       <div className={classes.gridParent}>
         <div className={classes.workoutDateGrid}>
           <Paper className={classes.paper}>
-            <div className={classes.workoutFormDivParent}>
-              <NormalDatePicker
-                selectedDate={props.selectedDate}
-                handleDateChange={props.handleDateChange}
-              />
-              <NormalTimePicker
-                selectedDate={props.selectedTime}
-                handleDateChange={props.handleTimeChange}
-              />
+            <div className={classes.workoutFormDivParent}></div>
+            <div className={classes.filterSelectorGrid1}>
+              <div className={classes.filterSelectorGrid1}>
+                <div className={classes.datePickerGrid}>
+                  <NormalDatePicker
+                    selectedDate={props.selectedDate}
+                    handleDateChange={props.handleDateChange}
+                  />
+                </div>
+                <div className={classes.dateTimePickerGrid}>
+                  <NormalTimePicker
+                    selectedDate={props.selectedTime}
+                    handleDateChange={props.handleTimeChange}
+                  />
+                </div>
+              </div>
+              <div className={classes.filterSelectorGrid2}>
+                <div className={classes.selectedTimesGrid}>
+                  <SelectedTimes />
+                </div>
+              </div>
             </div>
           </Paper>
         </div>

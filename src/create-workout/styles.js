@@ -30,6 +30,9 @@ const useStyles = makeStyles(theme => ({
     // display:'flex',
     margin: '50px'
   },
+  demo: {
+    backgroundColor: theme.palette.background.paper
+  },
   paper: {
     padding: theme.spacing(2),
     textAlign: 'left',
@@ -126,6 +129,27 @@ const useStyles = makeStyles(theme => ({
     'grid-column': '3/3',
     'grid-row': '1',
     'margin-top': '39px'
+  },
+  filterSelectorGrid1: {},
+  filterSelectorGrid1: {
+    display: 'grid',
+    'grid-template-columns': 'repeat(2, 1fr)',
+    'grid-auto-rows': 'minmax(min-content, max-content)'
+  },
+  datePickerGrid: {
+    'grid-column': '1/2',
+    'grid-row': '1',
+
+    'grid-auto-rows': 'minmax(min-content, max-content)'
+  },
+  dateTimePickerGrid: {
+    'grid-column': '1/2',
+    'grid-row': '2',
+    'grid-auto-rows': 'minmax(min-content, max-content)'
+  },
+  selectedTimesGrid: {
+    'grid-coilumn': '2/2',
+    'grid-auto-rows': 'minmax(min-content, max-content)'
   }
 }));
 
