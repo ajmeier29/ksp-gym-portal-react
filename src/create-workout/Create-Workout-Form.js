@@ -170,7 +170,7 @@ const NormalDatePicker = props => {
         <CssDatePicker
           margin="normal"
           id="date-picker-dialog"
-          label="Date picker dialog"
+          label="Date"
           format="MM/dd/yyyy"
           value={props.selectedDate}
           onChange={props.handleDateChange}
@@ -233,7 +233,7 @@ const CreateWorkoutEntryForm = props => {
   const [devices, setDevices] = useState([]); // Devices in NoSQL database
   const [formLocations, setFormLocations] = useState([]); // Locations to be submitted
   const [formDevices, setFormDevices] = useState([]); // Devices to be submitted
-  const [formWorkout, setFormWorkout] = useState([]); // Workout to be submitted
+  const [formAllSelectedTimes, setFormAllSelectedTimes] = useState([]); // Workout to be submitted
   const [formSeries, setFormSeries] = useState([]); // Series to be submitted
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -275,7 +275,18 @@ const CreateWorkoutEntryForm = props => {
     newDateTime.setDate(selectedDate.getDate());
     newDateTime.setHours(hours);
     newDateTime.setMinutes(minutes);
+    setSelectedTime(newDateTime);
     setSelectedDate(newDateTime);
+  };
+  // Pushes the current selected time on to the list and
+  // sets the time state for form submission.
+  // The time will always be available due to the state
+  // being set on render or after 'Add Time' button click
+  const handleAllSelctedTimesChange = () => {
+    const times = formAllSelectedTimes;
+    const newTime = new Date(selectedTime);
+    times.push(new Date(selectedTime));
+    setFormAllSelectedTimes([...times]);
   };
 
   const handleSubmit = () => {
@@ -283,6 +294,7 @@ const CreateWorkoutEntryForm = props => {
     const workout = {
       workout_name: workoutName,
       workout_date: workoutDateTime,
+      workout_times: formAllSelectedTimes,
       workout_image_url: 'www.youre-awesome.com',
       locations: [...formLocations],
       devices: [...formDevices],
@@ -380,6 +392,8 @@ const CreateWorkoutEntryForm = props => {
           <WorkoutSelectors
             selectedDate={selectedDate}
             selectedTime={selectedTime}
+            allSelectedTimes={formAllSelectedTimes}
+            handleAllSelctedTimesChange={handleAllSelctedTimesChange}
             handleDateChange={handleDateChange}
             handleTimeChange={handleTimeChange}
             handleWorkoutNameChange={handleWorkoutNameChange}
@@ -423,6 +437,26 @@ const listStyles = makeStyles(theme => ({
   }
 }));
 
+const StyledListItem = withStyles({
+  root: {
+    backgroundColor: 'blue',
+    '&$selected': {
+      backgroundColor: 'red'
+    }
+  },
+  selected: {}
+})(ListItem);
+
+const StyledList = withStyles({
+  root: {
+    backgroundColor: '#484848',
+    '&$selected': {
+      backgroundColor: 'red'
+    }
+  },
+  selected: {}
+})(List);
+
 const SelectedTimes = props => {
   const classes = listStyles();
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -430,40 +464,55 @@ const SelectedTimes = props => {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+  const toTwelveHourTime = date => {
+    return date.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    });
+  };
   return (
     <>
       <div className={classes.root}>
-        <List component="nav" aria-label="main mailbox folders">
-          <ListItem
+        <StyledList component="nav" aria-label="main mailbox folders">
+          {props.allSelectedTimes.map((time, index) => (
+            <>
+              <div>
+                <ListItem
+                  button
+                  selected={selectedIndex === index}
+                  onClick={event => handleListItemClick(event, index)}
+                >
+                  {toTwelveHourTime(time)}
+                </ListItem>
+              </div>
+            </>
+          ))}
+          {/* <ListItem
             button
             selected={selectedIndex === 0}
             onClick={event => handleListItemClick(event, 0)}
           >
             {'5:00PM'}
-          </ListItem>
-          <ListItem
-            button
-            selected={selectedIndex === 1}
-            onClick={event => handleListItemClick(event, 1)}
-          >
-            {'6:00PM'}
-          </ListItem>
-          <ListItem
-            button
-            selected={selectedIndex === 1}
-            onClick={event => handleListItemClick(event, 1)}
-          >
-            {'6:00PM'}
-          </ListItem>
-          <ListItem
-            button
-            selected={selectedIndex === 1}
-            onClick={event => handleListItemClick(event, 1)}
-          >
-            {'6:00PM'}
-          </ListItem>
-        </List>
+          </ListItem> */}
+        </StyledList>
         {/* <Divider /> */}
+      </div>
+    </>
+  );
+};
+
+SelectedTimes.propTypes = {
+  allSelectedTimes: PropTypes.array
+};
+
+const EmptyListItem = () => {
+  return (
+    <>
+      <div>
+        <ListItem button selected={''} onClick={''}>
+          {''}
+        </ListItem>
       </div>
     </>
   );
@@ -473,10 +522,9 @@ const WorkoutSelectors = props => {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.gridParent}>
+      <div className={classes.selctorsParent}>
         <div className={classes.workoutDateGrid}>
           <Paper className={classes.paper}>
-            <div className={classes.workoutFormDivParent}></div>
             <div className={classes.filterSelectorGrid1}>
               <div className={classes.filterSelectorGrid1}>
                 <div className={classes.datePickerGrid}>
@@ -490,11 +538,20 @@ const WorkoutSelectors = props => {
                     selectedDate={props.selectedTime}
                     handleDateChange={props.handleTimeChange}
                   />
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={props.handleAllSelctedTimesChange}
+                  >
+                    Add Time
+                  </Button>
                 </div>
               </div>
               <div className={classes.filterSelectorGrid2}>
                 <div className={classes.selectedTimesGrid}>
-                  <SelectedTimes />
+                  <SelectedTimes allSelectedTimes={props.allSelectedTimes} />
                 </div>
               </div>
             </div>
@@ -517,6 +574,8 @@ const WorkoutSelectors = props => {
 
 WorkoutSelectors.propTypes = {
   selectedDate: PropTypes.instanceOf(Date),
+  allSelectedTimes: PropTypes.array,
+  handleAllSelctedTimesChange: PropTypes.array,
   selectedTime: PropTypes.string,
   handleDateChange: PropTypes.func,
   handleTimeChange: PropTypes.func,

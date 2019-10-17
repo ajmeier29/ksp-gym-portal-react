@@ -130,25 +130,37 @@ const useStyles = makeStyles(theme => ({
     'grid-row': '1',
     'margin-top': '39px'
   },
-  filterSelectorGrid1: {},
+  selctorsParent: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr',
+    // 'grid-template-rows': '10px 100px',
+    'grid-auto-rows': 'minmax(100px, auto)',
+    'grid-gap': '10px',
+    margin: '10px'
+  },
   filterSelectorGrid1: {
     display: 'grid',
     'grid-template-columns': 'repeat(2, 1fr)',
     'grid-auto-rows': 'minmax(min-content, max-content)'
   },
+  filterSelectorGrid2: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr',
+    'grid-auto-rows': 'minmax(min-content, max-content)',
+    backgroundColor: '#383838'
+  },
   datePickerGrid: {
-    'grid-column': '1/2',
+    'grid-column': '3/3',
     'grid-row': '1',
-
     'grid-auto-rows': 'minmax(min-content, max-content)'
   },
   dateTimePickerGrid: {
-    'grid-column': '1/2',
+    'grid-column': '3/3',
     'grid-row': '2',
     'grid-auto-rows': 'minmax(min-content, max-content)'
   },
   selectedTimesGrid: {
-    'grid-coilumn': '2/2',
+    'grid-column': '3/3',
     'grid-auto-rows': 'minmax(min-content, max-content)'
   }
 }));
