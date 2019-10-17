@@ -402,7 +402,7 @@ const CreateWorkoutEntryForm = props => {
             <ControlPointIcon color="primary" onClick={handleSeriesAdd} />
             {<TypographyField title={'Add Series'} h={'h8'} />}
           </ThemeProvider>
-          <div className={classes.gridParent}>
+          <div className={classes.seriesGridParent}>
             {formSeries.map((currElement, index) => (
               <>
                 <Series
@@ -431,8 +431,6 @@ const CreateWorkoutEntryForm = props => {
 
 const listStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper
   }
 }));
@@ -450,6 +448,7 @@ const StyledListItem = withStyles({
 const StyledList = withStyles({
   root: {
     backgroundColor: '#484848',
+    width: '150%',
     '&$selected': {
       backgroundColor: 'red'
     }

@@ -96,14 +96,6 @@ const useStyles = makeStyles(theme => ({
     'grid-column': '2/14',
     'grid-row': '1/2'
   },
-  gridParent: {
-    display: 'grid',
-    'grid-template-columns': '1fr 1fr 1fr',
-    // 'grid-template-rows': '10px 100px',
-    'grid-auto-rows': 'minmax(100px, auto)',
-    'grid-gap': '10px',
-    margin: '10px'
-  },
   workoutDateGrid: {
     'grid-column': '1/2',
     'grid-row': '1'
@@ -112,21 +104,38 @@ const useStyles = makeStyles(theme => ({
     'grid-column': '2/4',
     'grid-row': '1'
   },
+  gridParent: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr 1fr',
+    // 'grid-template-rows': '10px 100px',
+    'grid-auto-rows': 'minmax(100px, auto)',
+    'grid-gap': '10px',
+    margin: '10px'
+  },
   seriesGrid: {
     'grid-column': '1/4'
     // 'grid-row': '1'
+  },
+
+  seriesGridParent: {
+    display: 'grid',
+    'grid-template-columns': '1fr 1fr 1fr',
+    // 'grid-template-rows': '10px 100px',
+    'grid-auto-rows': 'minmax(100px, auto)',
+    'grid-gap': '10px',
+    margin: '10px'
   },
   exerciseNumberGrid: {
     'grid-column': '1/2',
     'grid-row': '1'
   },
   exerciseNameGrid: {
-    'grid-column': '2/3',
+    'grid-column': '1/4',
     'grid-row': '1',
     'margin-top': '39px'
   },
   exerciseRepsGrid: {
-    'grid-column': '3/3',
+    'grid-column': '4/4',
     'grid-row': '1',
     'margin-top': '39px'
   },
@@ -160,7 +169,9 @@ const useStyles = makeStyles(theme => ({
     'grid-auto-rows': 'minmax(min-content, max-content)'
   },
   selectedTimesGrid: {
-    'grid-column': '3/3',
+    'grid-column': '1/3',
+
+    'padding-left': '10px',
     'grid-auto-rows': 'minmax(min-content, max-content)'
   }
 }));

@@ -90,12 +90,12 @@ const Exercise = props => {
               Exercise {props.exercise_number}
             </Typography>
           </ThemeProvider>
-          <div className={classes.workoutTextField}>
+          {/* <div className={classes.workoutTextField}>
             <NormalFormTextField
               labelName="Exercise Number"
               handleChange={props.handleExerciseChange}
             />
-          </div>
+          </div> */}
         </div>
         <div className={classes.exerciseNameGrid}>
           <div className={classes.workoutTextField}>
