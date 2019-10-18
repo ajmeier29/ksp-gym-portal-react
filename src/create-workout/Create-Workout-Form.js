@@ -34,6 +34,7 @@ import {
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 import { makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -465,9 +466,8 @@ const SelectedTimes = props => {
   };
   const toTwelveHourTime = date => {
     return date.toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
+      dateStyle: 'short',
+      timeStyle: 'short'
     });
   };
   return (
@@ -482,7 +482,7 @@ const SelectedTimes = props => {
                   selected={selectedIndex === index}
                   onClick={event => handleListItemClick(event, index)}
                 >
-                  {toTwelveHourTime(time)}
+                  {toTwelveHourTime(time)} | <DeleteIcon />
                 </ListItem>
               </div>
             </>
