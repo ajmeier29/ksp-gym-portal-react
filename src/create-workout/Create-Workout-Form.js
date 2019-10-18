@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
-import {
-  Paper,
-  Button,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from '@material-ui/core';
-import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  KeyboardTimePicker
-} from '@material-ui/pickers';
+import { Paper, Button, List, ListItem } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   FilterSelectionComponent,
@@ -24,7 +10,12 @@ import {
   containsObject,
   deviceCheckboxProcedures
 } from './Workout-Side-Filter';
-import { useStyles, iconTheme } from './styles.js';
+import {
+  useStyles,
+  iconTheme,
+  CssTimePicker,
+  CssDatePicker
+} from './styles.js';
 import { ThemeProvider } from '@material-ui/styles';
 import {
   NormalFormTextField,
@@ -69,99 +60,7 @@ const sourceDevices = [
   }
 ];
 
-const CssDatePicker = withStyles({
-  root: {
-    '& .MuiInput-root': {
-      color: 'white',
-      borderBottomColor: 'white'
-    },
-    '& .Mui-focused': {
-      borderBottomColor: 'white'
-    },
-    '& .MuiInput-input': {
-      borderBottomColor: 'white'
-    },
-    '& label.Mui-focused': {
-      color: 'white',
-      borderBottomColor: 'white'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
-      color: 'white'
-    },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'white',
-      color: 'white'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      '&:hover fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      flexGrow: 1,
-      color: 'white'
-    }
-  }
-})(KeyboardDatePicker);
-
-const CssTimePicker = withStyles({
-  root: {
-    '& .MuiInput-root': {
-      color: 'white',
-      borderBottomColor: 'white'
-    },
-    '& .Mui-focused': {
-      borderBottomColor: 'white'
-    },
-    '& .MuiInput-input': {
-      borderBottomColor: 'white'
-    },
-    '& label.Mui-focused': {
-      color: 'white',
-      borderBottomColor: 'white'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
-      color: 'white'
-    },
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'white',
-      color: 'white'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      '&:hover fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white',
-        borderBottomColor: 'white',
-        color: 'white'
-      },
-      flexGrow: 1,
-      color: 'white'
-    }
-  }
-})(KeyboardTimePicker);
-
-const NormalDatePicker = props => {
+const WorkoutDatePicker = props => {
   const classes = useStyles();
 
   return (
@@ -189,12 +88,12 @@ const NormalDatePicker = props => {
   );
 };
 
-NormalDatePicker.propTypes = {
+WorkoutDatePicker.propTypes = {
   selectedDate: PropTypes.instanceOf(Date),
   handleDateChange: PropTypes.func
 };
 
-const NormalTimePicker = props => {
+const WorkoutTimePicker = props => {
   const classes = useStyles();
 
   return (
@@ -221,7 +120,7 @@ const NormalTimePicker = props => {
   );
 };
 
-NormalTimePicker.propTypes = {
+WorkoutTimePicker.propTypes = {
   selectedDate: PropTypes.instanceOf(Date),
   handleDateChange: PropTypes.func
 };
@@ -308,10 +207,11 @@ const CreateWorkoutEntryForm = props => {
         getOptions(workout)
       );
     };
+    // Show loading screen while data is being posted
     props.history.push({
-      // pathname: '/new-workout-summary',
       pathname: '/loading'
     });
+
     const response = postData();
     response.then(parseJSON).then(res => {
       if (res.status !== 200) {
@@ -527,13 +427,13 @@ const WorkoutSelectors = props => {
             <div className={classes.filterSelectorGrid1}>
               <div className={classes.filterSelectorGrid1}>
                 <div className={classes.datePickerGrid}>
-                  <NormalDatePicker
+                  <WorkoutDatePicker
                     selectedDate={props.selectedDate}
                     handleDateChange={props.handleDateChange}
                   />
                 </div>
                 <div className={classes.dateTimePickerGrid}>
-                  <NormalTimePicker
+                  <WorkoutTimePicker
                     selectedDate={props.selectedTime}
                     handleDateChange={props.handleTimeChange}
                   />

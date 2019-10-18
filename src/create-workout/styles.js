@@ -1,7 +1,125 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core';
-import purple from '@material-ui/core/colors/purple';
+import { TextField } from '@material-ui/core';
 import { grey, blueGrey } from '@material-ui/core/colors';
+import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
+import { withStyles } from '@material-ui/styles';
+
+const CssTextField = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: 'white'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white'
+      },
+      '&:hover fieldset': {
+        borderColor: 'white'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white'
+      },
+      flexGrow: 1,
+      color: 'white'
+    }
+  }
+})(TextField);
+
+const CssDatePicker = withStyles({
+  root: {
+    '& .MuiInput-root': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .Mui-focused': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-input': {
+      borderBottomColor: 'white'
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiInput-underline:before': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      flexGrow: 1,
+      color: 'white'
+    }
+  }
+})(KeyboardDatePicker);
+
+const CssTimePicker = withStyles({
+  root: {
+    '& .MuiInput-root': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .Mui-focused': {
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-input': {
+      borderBottomColor: 'white'
+    },
+    '& label.Mui-focused': {
+      color: 'white',
+      borderBottomColor: 'white'
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiInput-underline:before': {
+      borderBottomColor: 'white',
+      color: 'white'
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&:hover fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'white',
+        borderBottomColor: 'white',
+        color: 'white'
+      },
+      flexGrow: 1,
+      color: 'white'
+    }
+  }
+})(KeyboardTimePicker);
 
 const seriesHeadingTheme = createMuiTheme({
   palette: {
@@ -176,4 +294,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export { useStyles, seriesHeadingTheme, iconTheme };
+export {
+  useStyles,
+  seriesHeadingTheme,
+  iconTheme,
+  CssTimePicker,
+  CssDatePicker,
+  CssTextField
+};

@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
-import { Paper, Grid, TextField, Typography, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/styles';
+import { Paper, Typography } from '@material-ui/core';
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import PropTypes from 'prop-types';
-import { useStyles, seriesHeadingTheme, iconTheme } from './styles.js';
-import { template } from '@babel/core';
+import {
+  useStyles,
+  seriesHeadingTheme,
+  iconTheme,
+  CssTextField
+} from './styles.js';
 
 const Series = props => {
   const classes = useStyles();
@@ -90,12 +93,6 @@ const Exercise = props => {
               Exercise {props.exercise_number}
             </Typography>
           </ThemeProvider>
-          {/* <div className={classes.workoutTextField}>
-            <NormalFormTextField
-              labelName="Exercise Number"
-              handleChange={props.handleExerciseChange}
-            />
-          </div> */}
         </div>
         <div className={classes.exerciseNameGrid}>
           <div className={classes.workoutTextField}>
@@ -128,30 +125,6 @@ Exercise.propTypes = {
   exercise_number: PropTypes.number,
   handleExerciseChange: PropTypes.func
 };
-
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'white'
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white'
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'white'
-      },
-      '&:hover fieldset': {
-        borderColor: 'white'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'white'
-      },
-      flexGrow: 1,
-      color: 'white'
-    }
-  }
-})(TextField);
 
 const NormalFormTextField = props => {
   const classes = useStyles();
