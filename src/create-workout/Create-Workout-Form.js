@@ -26,6 +26,7 @@ import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { removeFromArrayById, toTwelveHourTimeShort } from '../tools/tools';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -164,6 +165,7 @@ const CreateWorkoutEntryForm = props => {
   };
   // ------ End Series Changes
 
+  // ------ Workout Changes
   const handleDateChange = date => {
     setSelectedDate(date);
   };
@@ -178,6 +180,7 @@ const CreateWorkoutEntryForm = props => {
     setSelectedTime(newDateTime);
     setSelectedDate(newDateTime);
   };
+
   // Pushes the current selected time on to the list and
   // sets the time state for form submission.
   // The time will always be available due to the state
@@ -188,6 +191,14 @@ const CreateWorkoutEntryForm = props => {
     times.push(new Date(selectedTime));
     setFormAllSelectedTimes([...times]);
   };
+
+  const handleAllSelectedTimesDelete = (event, date) => {
+    const tempArr = formAllSelectedTimes;
+    const index = tempArr.findIndex(x => x === date);
+    const newArray = removeFromArrayById(tempArr, x => x === date);
+    setFormAllSelectedTimes([...newArray]);
+  };
+  // ------ End Workout Changes
 
   const handleSubmit = () => {
     const workoutDateTime = selectedDate;
@@ -294,6 +305,7 @@ const CreateWorkoutEntryForm = props => {
             selectedDate={selectedDate}
             selectedTime={selectedTime}
             allSelectedTimes={formAllSelectedTimes}
+            handleAllSelectedTimesDelete={handleAllSelectedTimesDelete}
             handleAllSelctedTimesChange={handleAllSelctedTimesChange}
             handleDateChange={handleDateChange}
             handleTimeChange={handleTimeChange}
@@ -349,7 +361,7 @@ const StyledListItem = withStyles({
 const StyledList = withStyles({
   root: {
     backgroundColor: '#484848',
-    width: '150%',
+    width: '160%',
     '&$selected': {
       backgroundColor: 'red'
     }
@@ -362,14 +374,9 @@ const SelectedTimes = props => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
+    // setSelectedIndex(index);
   };
-  const toTwelveHourTime = date => {
-    return date.toLocaleString('en-US', {
-      dateStyle: 'short',
-      timeStyle: 'short'
-    });
-  };
+
   return (
     <>
       <div className={classes.root}>
@@ -379,10 +386,17 @@ const SelectedTimes = props => {
               <div>
                 <ListItem
                   button
-                  selected={selectedIndex === index}
+                  selected={''}
                   onClick={event => handleListItemClick(event, index)}
                 >
-                  {toTwelveHourTime(time)} | <DeleteIcon />
+                  {toTwelveHourTimeShort(time)} |{' '}
+                  <div
+                    onClick={event =>
+                      props.handleAllSelectedTimesDelete(event, time)
+                    }
+                  >
+                    <DeleteIcon />
+                  </div>
                 </ListItem>
               </div>
             </>
@@ -402,7 +416,8 @@ const SelectedTimes = props => {
 };
 
 SelectedTimes.propTypes = {
-  allSelectedTimes: PropTypes.array
+  allSelectedTimes: PropTypes.array,
+  handleAllSelectedTimesDelete: PropTypes.func
 };
 
 const EmptyListItem = () => {
@@ -450,7 +465,12 @@ const WorkoutSelectors = props => {
               </div>
               <div className={classes.filterSelectorGrid2}>
                 <div className={classes.selectedTimesGrid}>
-                  <SelectedTimes allSelectedTimes={props.allSelectedTimes} />
+                  <SelectedTimes
+                    allSelectedTimes={props.allSelectedTimes}
+                    handleAllSelectedTimesDelete={
+                      props.handleAllSelectedTimesDelete
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -478,7 +498,8 @@ WorkoutSelectors.propTypes = {
   selectedTime: PropTypes.string,
   handleDateChange: PropTypes.func,
   handleTimeChange: PropTypes.func,
-  handleWorkoutNameChange: PropTypes.func
+  handleWorkoutNameChange: PropTypes.func,
+  handleAllSelectedTimesDelete: PropTypes.func
 };
 
 export { CreateWorkoutEntryForm as CreateWorkoutForm, useStyles };

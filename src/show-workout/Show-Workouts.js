@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
-import PropTypes from 'prop-types';
+import PropTypes, { array } from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   ExpansionPanel,
@@ -26,6 +26,7 @@ import {
 import { useStyles, editButtonTheme, summaryText } from './styles';
 import { Paper, Button } from '@material-ui/core';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
+import { toTwelveHourTimeShort } from '../tools/tools';
 
 const panelStyles = makeStyles(theme => ({
   root: {
@@ -262,16 +263,23 @@ const titleize = sentence => {
 const WorkoutSummary = props => {
   return (
     <>
-      {Object.entries(props.data).map((key, value) => {
+      {Object.entries(props.data).map(key => {
         const keyTitle = cleanandtitle(key[0]);
-        if (Array.isArray(key[1])) {
+        let value = key[1];
+        let isDate = Date.parse(value);
+        // if date, convert it
+        if (!isNaN(isDate) && !(value instanceof array)) {
+          var isodate = new Date(value);
+          value = isodate; //toTwelveHourTimeShort(isDate).toISOString();
+        }
+        if (Array.isArray(value)) {
           return (
             <>
               <li>
                 {keyTitle}:
                 <ul>
                   <WorkoutSummary
-                    data={key[1]}
+                    data={value}
                     useparent={false}
                     parentname={key[0]}
                   />
@@ -279,11 +287,11 @@ const WorkoutSummary = props => {
               </li>
             </>
           );
-        } else if (typeof key[1] === 'object') {
+        } else if (typeof value === 'object') {
           return (
             <>
               <ul>
-                <WorkoutSummary data={key[1]} parentname={key[0]} />
+                <WorkoutSummary data={value} parentname={key[0]} />
               </ul>
             </>
           );
@@ -303,7 +311,7 @@ const WorkoutSummary = props => {
                   : props.parentname === undefined
                   ? keyTitle + ':'
                   : ''}{' '}
-                {key[1]}
+                {value}
               </li>
             </>
           );

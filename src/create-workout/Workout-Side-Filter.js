@@ -13,12 +13,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useStyles } from './Create-Workout-Form';
-
-// removes an item from an array based of of an 'id' attribute
-const removeFromArrayById = (arr, fnMatch) => {
-  const index = arr.findIndex(fnMatch);
-  return arr.slice(0, index).concat(arr.slice(index + 1, arr.length));
-};
+import { removeFromArrayById } from '../tools/tools';
 
 const containsObject = (obj, list) => {
   var x;
