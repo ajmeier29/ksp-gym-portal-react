@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from './styles.js';
+import { convertIfDate } from '../tools/tools';
 
 // Displays the workout that was just persisted
 // TODO: Cleanup further and remove ID's and other useless data.
@@ -57,7 +58,7 @@ const Summary = props => {
                     : props.parentname === undefined
                     ? key[0] + ':'
                     : ''}{' '}
-                  {JSON.stringify(key[1])}
+                  {convertIfDate(key[1])}
                 </div>
               </li>
             </>

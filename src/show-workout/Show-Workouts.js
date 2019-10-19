@@ -26,7 +26,7 @@ import {
 import { useStyles, editButtonTheme, summaryText } from './styles';
 import { Paper, Button } from '@material-ui/core';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
-import { toTwelveHourTimeShort } from '../tools/tools';
+import { toTwelveHourTimeShort, convertIfDate } from '../tools/tools';
 
 const panelStyles = makeStyles(theme => ({
   root: {
@@ -265,21 +265,23 @@ const WorkoutSummary = props => {
     <>
       {Object.entries(props.data).map(key => {
         const keyTitle = cleanandtitle(key[0]);
-        let value = key[1];
-        let isDate = Date.parse(value);
+
+        //let isDate = isValidDate(value)
         // if date, convert it
-        if (!isNaN(isDate) && !(value instanceof array)) {
+        {
+          /* if (isDate) {
           var isodate = new Date(value);
           value = isodate; //toTwelveHourTimeShort(isDate).toISOString();
+        } */
         }
-        if (Array.isArray(value)) {
+        if (Array.isArray(key[1])) {
           return (
             <>
               <li>
                 {keyTitle}:
                 <ul>
                   <WorkoutSummary
-                    data={value}
+                    data={key[1]}
                     useparent={false}
                     parentname={key[0]}
                   />
@@ -287,11 +289,11 @@ const WorkoutSummary = props => {
               </li>
             </>
           );
-        } else if (typeof value === 'object') {
+        } else if (typeof key[1] === 'object') {
           return (
             <>
               <ul>
-                <WorkoutSummary data={value} parentname={key[0]} />
+                <WorkoutSummary data={key[1]} parentname={key[0]} />
               </ul>
             </>
           );
@@ -311,7 +313,7 @@ const WorkoutSummary = props => {
                   : props.parentname === undefined
                   ? keyTitle + ':'
                   : ''}{' '}
-                {value}
+                {convertIfDate(key[1])}
               </li>
             </>
           );

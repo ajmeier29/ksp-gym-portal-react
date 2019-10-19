@@ -1,3 +1,4 @@
+import moment from 'moment';
 // Deletes an item in an array by using the function (fnMatch) to
 // find the index of the item to delete.
 // Example Usage:
@@ -15,4 +16,20 @@ const toTwelveHourTimeShort = date => {
   });
 };
 
-export { removeFromArrayById, toTwelveHourTimeShort };
+const isValidDate = date => {
+  return date instanceof Date && !isNaN(date);
+};
+
+const convertIfDate = value => {
+  let isDate = new Date(value);
+  if (
+    typeof value === 'string' &&
+    isValidDate(isDate) &&
+    isDate > new Date(2018, 1, 1)
+  ) {
+    return toTwelveHourTimeShort(new Date(value));
+  }
+  return value;
+};
+
+export { removeFromArrayById, toTwelveHourTimeShort, convertIfDate };

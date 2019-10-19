@@ -171,14 +171,15 @@ const CreateWorkoutEntryForm = props => {
   };
 
   const handleTimeChange = date => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const newDateTime = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let newDateTime = new Date();
     newDateTime.setDate(selectedDate.getDate());
     newDateTime.setHours(hours);
     newDateTime.setMinutes(minutes);
-    setSelectedTime(newDateTime);
-    setSelectedDate(newDateTime);
+    newDateTime.setSeconds(0);
+    let timeToSubmit = toTwelveHourTimeShort(date);
+    setSelectedTime(timeToSubmit);
   };
 
   // Pushes the current selected time on to the list and
@@ -187,8 +188,16 @@ const CreateWorkoutEntryForm = props => {
   // being set on render or after 'Add Time' button click
   const handleAllSelctedTimesChange = () => {
     const times = formAllSelectedTimes;
-    const newTime = new Date(selectedTime);
-    times.push(new Date(selectedTime));
+    const date = new Date(selectedTime);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let newDateTime = new Date();
+    newDateTime.setDate(selectedDate.getDate());
+    newDateTime.setHours(hours);
+    newDateTime.setMinutes(minutes);
+    newDateTime.setSeconds(0);
+    const newTime = toTwelveHourTimeShort(newDateTime);
+    times.push(newTime);
     setFormAllSelectedTimes([...times]);
   };
 
