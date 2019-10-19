@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useStyles } from './Create-Workout-Form';
-import { removeFromArrayById } from '../tools/tools';
+import { removeFromArrayByIndex } from '../tools/tools';
 
 const containsObject = (obj, list) => {
   var x;
@@ -50,7 +50,7 @@ const locationCheckboxProcedures = (
     list = locFormArr.concat(sourceArr[index]);
   } else {
     // Remove the location
-    list = removeFromArrayById(locFormArr, x => x.id == sourceArr[index].id);
+    list = removeFromArrayByIndex(locFormArr, x => x.id == sourceArr[index].id);
     // Remove all devices associated with that location
   }
   setLocStateFn(list);
@@ -67,7 +67,7 @@ const deviceCheckboxProcedures = (event, sourceArr, stateArr, setStateFn) => {
     list = stateArr.concat(sourceArr[index]);
   } else {
     // Remove the location
-    list = removeFromArrayById(stateArr, x => x.id == sourceArr[index].id);
+    list = removeFromArrayByIndex(stateArr, x => x.id == sourceArr[index].id);
   }
   setStateFn(list);
 };

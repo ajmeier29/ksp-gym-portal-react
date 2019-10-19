@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { fetchJsonPromise } from '../api/api-calls';
+import { fetchJsonPromise, alertmessage, parseJSON } from '../api/api-calls';
 import {
   Dropdown,
   DropdownButton,
@@ -25,8 +25,11 @@ import {
 } from '../create-workout/Workout-Fields';
 import { useStyles, editButtonTheme, summaryText } from './styles';
 import { Paper, Button } from '@material-ui/core';
-import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
-import { toTwelveHourTimeShort, convertIfDate } from '../tools/tools';
+import {
+  toTwelveHourTimeShort,
+  convertIfDate,
+  removeFromArrayByIndex
+} from '../tools/tools';
 
 const panelStyles = makeStyles(theme => ({
   root: {
@@ -145,10 +148,22 @@ const WorkoutExpandableTable = props => {
     //});
   }, []);
 
+  // Delete a workout from the workoutinfo list
+  const handleWorkoutDelete = id => {
+    const tempArr = removeFromArrayByIndex(workoutinfo, x => x.id == id);
+    setWorkoutinfo([...tempArr]);
+  };
+
   return (
     <div className={classes.root}>
       {workoutinfo.map(workout => {
-        return <WorkoutLineItem key={workout.id} workoutinfo={workout} />;
+        return (
+          <WorkoutLineItem
+            key={workout.id}
+            workoutinfo={workout}
+            handleWorkoutDelete={handleWorkoutDelete}
+          />
+        );
       })}
     </div>
   );
@@ -188,12 +203,32 @@ const WorkoutLineItem = props => {
   const classes = panelStyles();
   const paperStyles = useStyles();
   const workoutName = `Workout Name: ${props.workoutinfo.workout_name}`;
-  const workoutDate = `Workout Date: ${new Date(
-    props.workoutinfo.workout_date
-  ).toLocaleString()}`;
+  // const workoutDate = `Workout Times: ${new Date( props.workoutinfo.date_added).toLocaleString()}`;
+  let formatedDateTimes = props.workoutinfo.workout_times.map(x => {
+    return toTwelveHourTimeShort(new Date(x));
+  });
+  let strFormatedDateTimes = formatedDateTimes.join(' \\\\ ');
+  const workoutDate = `Workout Times: ${strFormatedDateTimes}`;
   const workoutHeader = `${workoutName} | ${workoutDate}`;
 
   const handleDelete = () => {
+    const postLink =
+      process.env.REACT_APP_API_DELETE_WORKOUT + props.workoutinfo.id;
+    const deleteRecord = async () => {
+      return await fetch(postLink, { method: 'delete' });
+    };
+
+    deleteRecord()
+      .then(parseJSON)
+      .then(res => {
+        if (res.status !== 200) {
+          alertmessage(res.json.errors);
+        } else if (res.ok) {
+          //alertmessage('properly deleted')
+          // delete workout=
+          props.handleWorkoutDelete(props.workoutinfo.id);
+        }
+      });
     // const postData = async () => {
     //   return await fetch(
     //     process.env.REACT_APP_API_POST_WORKOUT,
@@ -222,7 +257,7 @@ const WorkoutLineItem = props => {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={''}
+                onClick={handleDelete}
               >
                 Delete
               </Button>
@@ -235,7 +270,8 @@ const WorkoutLineItem = props => {
 };
 
 WorkoutLineItem.propTypes = {
-  workoutinfo: PropTypes.object
+  workoutinfo: PropTypes.object,
+  handleWorkoutDelete: PropTypes.func
 };
 
 // Make changes to string to replace values,

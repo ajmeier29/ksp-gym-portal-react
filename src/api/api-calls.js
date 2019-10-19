@@ -40,9 +40,9 @@ const alertmessage = message => {
   alert(JSON.stringify(message));
 };
 
-const getOptions = data => {
+const getOptions = (data, method) => {
   return {
-    method: 'post',
+    method: method,
     headers: {
       Accept: 'application/json; charset=utf-8',
       'Content-Type': 'application/json'

@@ -26,7 +26,7 @@ import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { removeFromArrayById, toTwelveHourTimeShort } from '../tools/tools';
+import { removeFromArrayByIndex, toTwelveHourTimeShort } from '../tools/tools';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -204,16 +204,14 @@ const CreateWorkoutEntryForm = props => {
   const handleAllSelectedTimesDelete = (event, date) => {
     const tempArr = formAllSelectedTimes;
     const index = tempArr.findIndex(x => x === date);
-    const newArray = removeFromArrayById(tempArr, x => x === date);
+    const newArray = removeFromArrayByIndex(tempArr, x => x === date);
     setFormAllSelectedTimes([...newArray]);
   };
   // ------ End Workout Changes
 
   const handleSubmit = () => {
-    const workoutDateTime = selectedDate;
     const workout = {
       workout_name: workoutName,
-      workout_date: workoutDateTime,
       workout_times: formAllSelectedTimes,
       workout_image_url: 'www.youre-awesome.com',
       locations: [...formLocations],
@@ -224,7 +222,7 @@ const CreateWorkoutEntryForm = props => {
     const postData = async () => {
       return await fetch(
         process.env.REACT_APP_API_POST_WORKOUT,
-        getOptions(workout)
+        getOptions(workout, 'post')
       );
     };
     // Show loading screen while data is being posted
