@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core';
-import { grey, blue } from '@material-ui/core/colors';
+import { grey, blueGrey } from '@material-ui/core/colors';
 
 const CSSDialog = withStyles({
   root: {
@@ -48,7 +48,7 @@ const CSSDialogActions = withStyles({
   }
 })(DialogActions);
 
-const CSSButton = withStyles({
+const DialogButtons = withStyles({
   root: {
     'background-color': '#383838',
     '&.MuiButton-text': {
@@ -76,7 +76,7 @@ const DialogBox = props => {
         <CSSDialogActions>
           {props.buttonInfo.map(x => (
             <>
-              <CSSButton onClick={x.handle}>{x.text}</CSSButton>
+              <DialogButtons onClick={x.handle}>{x.text}</DialogButtons>
             </>
           ))}
         </CSSDialogActions>
@@ -94,4 +94,19 @@ DialogBox.propTypes = {
   buttonInfo: PropTypes.array
 };
 
-export default DialogBox;
+const FormButtons = withStyles({
+  root: {
+    'background-color': blueGrey[50],
+    '&.MuiButton-text': {
+      color: 'black'
+    },
+    '&:focus': {
+      outline: 'none'
+    },
+    '&:hover': {
+      backgroundColor: 'lightgrey'
+    }
+  }
+})(Button);
+
+export { DialogBox, FormButtons };

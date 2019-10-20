@@ -27,7 +27,7 @@ import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { removeFromArrayByIndex, toTwelveHourTimeShort } from '../tools/tools';
-import DialogBox from '../tools/react-tools';
+import { DialogBox, FormButtons } from '../tools/react-tools';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -338,7 +338,7 @@ const CreateWorkoutEntryForm = props => {
               </>
             ))}
           </div>
-          <ThemeProvider theme={iconTheme}>
+          {/* <ThemeProvider theme={iconTheme}>
             <Button
               variant="contained"
               color="primary"
@@ -346,25 +346,24 @@ const CreateWorkoutEntryForm = props => {
               onClick={handleSubmit}
             >
               Submit
-            </Button>
-            <DialogBox
-              dialogTitle={'Submit Workout'}
-              dialogContentText={
-                'Are you sure you want to submit this workout?'
+            </Button> */}
+          <FormButtons onClick={handleSubmit}>Submit</FormButtons>
+          <DialogBox
+            dialogTitle={'Submit Workout'}
+            dialogContentText={'Are you sure you want to submit this workout?'}
+            buttonInfo={[
+              {
+                text: 'Cancel',
+                handle: () => setDialogOpen(false)
+              },
+              {
+                text: 'Submit',
+                handle: () => submitForm()
               }
-              buttonInfo={[
-                {
-                  text: 'Cancel',
-                  handle: () => setDialogOpen(false)
-                },
-                {
-                  text: 'Submit',
-                  handle: () => submitForm()
-                }
-              ]}
-              open={dialogOpen}
-            />
-          </ThemeProvider>
+            ]}
+            open={dialogOpen}
+          />
+          {/* </ThemeProvider> */}
         </div>
       </div>
     </>
@@ -473,15 +472,9 @@ const WorkoutSelectors = props => {
                     selectedDate={props.selectedTime}
                     handleDateChange={props.handleTimeChange}
                   />
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={props.handleAllSelctedTimesChange}
-                  >
+                  <FormButtons onClick={props.handleAllSelctedTimesChange}>
                     Add Time
-                  </Button>
+                  </FormButtons>
                 </div>
               </div>
               <div className={classes.filterSelectorGrid2}>
