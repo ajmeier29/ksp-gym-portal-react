@@ -140,7 +140,7 @@ const CreateWorkoutEntryForm = props => {
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date().setSeconds(0));
-  const [dialogOpen, setDialogOpen] = useState(true); // State to show the submit dialog
+  const [dialogOpen, setDialogOpen] = useState(false); // State to show the submit dialog
 
   // ------ Series Changes
   const handleSeriesAdd = () => {
@@ -352,8 +352,16 @@ const CreateWorkoutEntryForm = props => {
               dialogContentText={
                 'Are you sure you want to submit this workout?'
               }
-              handleokfn={''}
-              handlenokfn={''}
+              buttonInfo={[
+                {
+                  text: 'Cancel',
+                  handle: () => setDialogOpen(false)
+                },
+                {
+                  text: 'Submit',
+                  handle: () => submitForm()
+                }
+              ]}
               open={dialogOpen}
             />
           </ThemeProvider>

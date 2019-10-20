@@ -74,8 +74,11 @@ const DialogBox = props => {
           </CSSDialogContentText>
         </CSSDialogContent>
         <CSSDialogActions>
-          <CSSButton onClick={handleClose}>Cancel</CSSButton>
-          <CSSButton onClick={handleClose}>Submit</CSSButton>
+          {props.buttonInfo.map(x => (
+            <>
+              <CSSButton onClick={x.handle}>{x.text}</CSSButton>
+            </>
+          ))}
         </CSSDialogActions>
       </CSSDialog>
     </>
@@ -87,7 +90,8 @@ DialogBox.propTypes = {
   dialogTitle: PropTypes.string,
   dialogContentText: PropTypes.string,
   handleokfn: PropTypes.func,
-  handlenokfn: PropTypes.func
+  handlenokfn: PropTypes.func,
+  buttonInfo: PropTypes.array
 };
 
 export default DialogBox;
