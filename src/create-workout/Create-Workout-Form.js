@@ -27,6 +27,7 @@ import { getOptions, alertmessage, parseJSON } from '../api/api-calls';
 import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { removeFromArrayByIndex, toTwelveHourTimeShort } from '../tools/tools';
+import DialogBox from '../tools/react-tools';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -139,6 +140,7 @@ const CreateWorkoutEntryForm = props => {
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date().setSeconds(0));
+  const [dialogOpen, setDialogOpen] = useState(true); // State to show the submit dialog
 
   // ------ Series Changes
   const handleSeriesAdd = () => {
@@ -210,6 +212,9 @@ const CreateWorkoutEntryForm = props => {
   // ------ End Workout Changes
 
   const handleSubmit = () => {
+    setDialogOpen(true);
+  };
+  const submitForm = () => {
     const workout = {
       workout_name: workoutName,
       workout_times: formAllSelectedTimes,
@@ -342,6 +347,15 @@ const CreateWorkoutEntryForm = props => {
             >
               Submit
             </Button>
+            <DialogBox
+              dialogTitle={'Submit Workout'}
+              dialogContentText={
+                'Are you sure you want to submit this workout?'
+              }
+              handleokfn={''}
+              handlenokfn={''}
+              open={dialogOpen}
+            />
           </ThemeProvider>
         </div>
       </div>
@@ -408,15 +422,7 @@ const SelectedTimes = props => {
               </div>
             </>
           ))}
-          {/* <ListItem
-            button
-            selected={selectedIndex === 0}
-            onClick={event => handleListItemClick(event, 0)}
-          >
-            {'5:00PM'}
-          </ListItem> */}
         </StyledList>
-        {/* <Divider /> */}
       </div>
     </>
   );
