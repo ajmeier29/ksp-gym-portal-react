@@ -61,12 +61,9 @@ const DialogButtons = withStyles({
 })(Button);
 
 const DialogBox = props => {
-  const handleClose = () => {
-    var test = '';
-  };
   return (
     <>
-      <CSSDialog open={props.open} onClose={handleClose}>
+      <CSSDialog open={props.open}>
         <CSSDialogTitle id="dialog-title">{props.dialogTitle}</CSSDialogTitle>
         <CSSDialogContent>
           <CSSDialogContentText id="alert-dialog-descrtiption">
@@ -109,4 +106,4 @@ const FormButtons = withStyles({
   }
 })(Button);
 
-export { DialogBox, FormButtons };
+export { DialogBox, FormButtons, CSSDialogActions };

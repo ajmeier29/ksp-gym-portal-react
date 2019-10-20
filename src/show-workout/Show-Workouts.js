@@ -28,7 +28,8 @@ import { Paper, Button } from '@material-ui/core';
 import {
   toTwelveHourTimeShort,
   convertIfDate,
-  removeFromArrayByIndex
+  removeFromArrayByIndex,
+  cleanAndTitle
 } from '../tools/tools';
 
 const panelStyles = makeStyles(theme => ({
@@ -274,33 +275,11 @@ WorkoutLineItem.propTypes = {
   handleWorkoutDelete: PropTypes.func
 };
 
-// Make changes to string to replace values,
-// while titleizing
-const cleanandtitle = value => {
-  if (typeof value === 'string') {
-    return titleize(value.replace(/_/g, ' '));
-  } else {
-    return value;
-  }
-};
-
-const titleize = sentence => {
-  if (!sentence.split) return sentence;
-  var _titleizeWord = function(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-    },
-    result = [];
-  sentence.split(' ').forEach(function(w) {
-    result.push(_titleizeWord(w));
-  });
-  return result.join(' ');
-};
-
 const WorkoutSummary = props => {
   return (
     <>
       {Object.entries(props.data).map(key => {
-        const keyTitle = cleanandtitle(key[0]);
+        const keyTitle = cleanAndTitle(key[0]);
 
         //let isDate = isValidDate(value)
         // if date, convert it

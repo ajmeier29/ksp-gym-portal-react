@@ -28,6 +28,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { removeFromArrayByIndex, toTwelveHourTimeShort } from '../tools/tools';
 import { DialogBox, FormButtons } from '../tools/react-tools';
+import ViewWorkout from '../workouts/workout-view';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -61,6 +62,68 @@ const sourceDevices = [
     location: 'Bethlehem'
   }
 ];
+
+const tempWorkoutInfoForPreview = {
+  id: '5dacae0ef79d345848c7a708',
+  workout_name: 'Dialog Test 2',
+  date_added: '2019-10-20T18:57:18.47Z',
+  workout_times: [
+    '2019-10-20T18:55:00Z',
+    '2019-10-20T18:55:00Z',
+    '2019-10-20T18:55:00Z'
+  ],
+  workout_image_url: 'www.youre-awesome.com',
+  locations: [
+    {
+      id: '5da228c501edb329bb41a972',
+      name: 'Bethlehem',
+      phone: '6103905742'
+    },
+    {
+      id: '5da228c501edb329bb43a972',
+      name: 'Allentown',
+      phone: '6013905742'
+    }
+  ],
+  devices: [
+    {
+      id: '5da228c511edb329bb49a972',
+      name: 'Allentown Device 2'
+    },
+    {
+      id: '5da228c501edb329bb49a972',
+      name: 'Allentown Device 1'
+    },
+    {
+      id: '5da228c521edb329bb49a972',
+      name: 'Bethlehem Intro Device'
+    }
+  ],
+  workout_series: [
+    {
+      series_number: 1,
+      series_tag: 'Dialog Test 2',
+      exercises: [
+        {
+          exercise_number: 1,
+          exercise_name: 'Dialog Test 2',
+          exercise_reps: 'Dialog Test 2'
+        }
+      ]
+    },
+    {
+      series_number: 2,
+      series_tag: 'Dialog Test 2',
+      exercises: [
+        {
+          exercise_number: 1,
+          exercise_name: 'Dialog Test 2',
+          exercise_reps: 'Dialog Test 2'
+        }
+      ]
+    }
+  ]
+};
 
 const WorkoutDatePicker = props => {
   const classes = useStyles();
@@ -140,7 +203,8 @@ const CreateWorkoutEntryForm = props => {
   const [workoutName, setWorkoutName] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(new Date().setSeconds(0));
-  const [dialogOpen, setDialogOpen] = useState(false); // State to show the submit dialog
+  const [submitDialogOpen, setSubmitDialogOpen] = useState(false); // State to show the submit dialog
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false); // State to show the preview of the workout
 
   // ------ Series Changes
   const handleSeriesAdd = () => {
@@ -168,6 +232,10 @@ const CreateWorkoutEntryForm = props => {
   // ------ End Series Changes
 
   // ------ Workout Changes
+  const handlPreviewClick = () => {
+    var testvar = !previewDialogOpen;
+    setPreviewDialogOpen(!previewDialogOpen);
+  };
   const handleDateChange = date => {
     setSelectedDate(date);
   };
@@ -212,8 +280,9 @@ const CreateWorkoutEntryForm = props => {
   // ------ End Workout Changes
 
   const handleSubmit = () => {
-    setDialogOpen(true);
+    setSubmitDialogOpen(true);
   };
+
   const submitForm = () => {
     const workout = {
       workout_name: workoutName,
@@ -338,32 +407,28 @@ const CreateWorkoutEntryForm = props => {
               </>
             ))}
           </div>
-          {/* <ThemeProvider theme={iconTheme}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button> */}
           <FormButtons onClick={handleSubmit}>Submit</FormButtons>
+          <FormButtons onClick={handlPreviewClick}>Preview Workout</FormButtons>
           <DialogBox
             dialogTitle={'Submit Workout'}
             dialogContentText={'Are you sure you want to submit this workout?'}
             buttonInfo={[
               {
                 text: 'Cancel',
-                handle: () => setDialogOpen(false)
+                handle: () => setSubmitDialogOpen(false)
               },
               {
                 text: 'Submit',
                 handle: () => submitForm()
               }
             ]}
-            open={dialogOpen}
+            open={submitDialogOpen}
           />
-          {/* </ThemeProvider> */}
+          <ViewWorkout
+            open={previewDialogOpen}
+            workoutInfo={tempWorkoutInfoForPreview}
+            handleClose={handlPreviewClick}
+          />
         </div>
       </div>
     </>
