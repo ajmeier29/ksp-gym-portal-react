@@ -65,7 +65,7 @@ const sourceDevices = [
 
 const tempWorkoutInfoForPreview = {
   id: '5dacae0ef79d345848c7a708',
-  workout_name: 'Dialog Test 2',
+  workout_name: 'Adult Metabolic Workout',
   date_added: '2019-10-20T18:57:18.47Z',
   workout_times: [
     '2019-10-20T18:55:00Z',
@@ -102,23 +102,94 @@ const tempWorkoutInfoForPreview = {
   workout_series: [
     {
       series_number: 1,
-      series_tag: 'Dialog Test 2',
+      series_tag: '3x',
       exercises: [
         {
           exercise_number: 1,
-          exercise_name: 'Dialog Test 2',
-          exercise_reps: 'Dialog Test 2'
+          exercise_name: 'BB/DB Chest Press',
+          exercise_reps: '12x-10x-8x'
+        },
+        {
+          exercise_number: 2,
+          exercise_name: 'Side Plant Partner Row',
+          exercise_reps: '10x ea'
+        },
+        {
+          exercise_number: 3,
+          exercise_name: 'SB Leg Overs',
+          exercise_reps: '8x ea'
+        },
+        {
+          exercise_number: 4,
+          exercise_name: 'KB Arounds',
+          exercise_reps: '8x ea'
+        },
+        {
+          exercise_number: 5,
+          exercise_name: 'Facepulls',
+          exercise_reps: '10-15x'
         }
       ]
     },
     {
       series_number: 2,
-      series_tag: 'Dialog Test 2',
+      series_tag: '2-3x',
       exercises: [
         {
           exercise_number: 1,
-          exercise_name: 'Dialog Test 2',
-          exercise_reps: 'Dialog Test 2'
+          exercise_name: 'Plate Walk Overs',
+          exercise_reps: '6x ea'
+        },
+        {
+          exercise_number: 2,
+          exercise_name: 'Bench Dips (chain opt)',
+          exercise_reps: '10-20x ea'
+        },
+        {
+          exercise_number: 3,
+          exercise_name: 'BW Rows/Pull ups',
+          exercise_reps: '10-12x/6-8x'
+        },
+        {
+          exercise_number: 4,
+          exercise_name: 'KB Toe Touches',
+          exercise_reps: '20x'
+        },
+        {
+          exercise_number: 5,
+          exercise_name: 'Lat Fun Crawls (width)',
+          exercise_reps: '4x'
+        }
+      ]
+    },
+    {
+      series_number: 2,
+      series_tag: ':30 seconds',
+      exercises: [
+        {
+          exercise_number: 1,
+          exercise_name: 'Partner Plank Claps',
+          exercise_reps: ''
+        },
+        {
+          exercise_number: 2,
+          exercise_name: 'DB Curl to Press',
+          exercise_reps: ''
+        },
+        {
+          exercise_number: 3,
+          exercise_name: "Alt T's/Y's",
+          exercise_reps: ''
+        },
+        {
+          exercise_number: 4,
+          exercise_name: 'Ft up OH KB Hold',
+          exercise_reps: ''
+        },
+        {
+          exercise_number: 5,
+          exercise_name: 'Slider Saws',
+          exercise_reps: ''
         }
       ]
     }
