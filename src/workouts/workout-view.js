@@ -82,9 +82,7 @@ const WorkoutSummary = props => {
         <Typography variant="h1" component="h2" gutterBottom>
           {workoutDate.getMonth()} / {workoutDate.getDate()}{' '}
           {props.workoutInfo.workout_name}{' '}
-          <img
-            src={require('C:\\Users\\ameier\\Documents\\VSCode\\ksp-gym-portal-react\\src\\ksplogo.PNG')}
-          />
+          <img src={require('../assets/ksplogo.png')} />
         </Typography>
       </div>
     </>
