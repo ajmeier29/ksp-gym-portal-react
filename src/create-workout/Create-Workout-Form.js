@@ -28,7 +28,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { removeFromArrayByIndex, toTwelveHourTimeShort } from '../tools/tools';
 import { DialogBox, FormButtons } from '../tools/react-tools';
-import ViewWorkout from '../workouts/workout-view';
+import { ViewWorkout } from '../workouts/workout-view';
 
 // TEMP, NEED TO REMOVE
 // REPLACE WITH WEB API CALL
@@ -355,6 +355,7 @@ const CreateWorkoutEntryForm = props => {
   };
 
   const submitForm = () => {
+    // const workout = buildWorkoutObject();
     const workout = {
       workout_name: workoutName,
       workout_times: formAllSelectedTimes,
@@ -386,6 +387,17 @@ const CreateWorkoutEntryForm = props => {
         });
       }
     });
+  };
+
+  const buildWorkoutObject = () => {
+    return {
+      workout_name: workoutName,
+      workout_times: formAllSelectedTimes,
+      workout_image_url: 'www.youre-awesome.com',
+      locations: [...formLocations],
+      devices: [...formDevices],
+      workout_series: [...formSeries]
+    };
   };
   const handleWorkoutNameChange = event => {
     setWorkoutName(event.target.value);
@@ -497,7 +509,7 @@ const CreateWorkoutEntryForm = props => {
           />
           <ViewWorkout
             open={previewDialogOpen}
-            workoutInfo={tempWorkoutInfoForPreview}
+            workoutInfo={buildWorkoutObject()}
             handleClose={handlPreviewClick}
           />
         </div>

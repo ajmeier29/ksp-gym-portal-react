@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { setTimeout } from 'timers';
-import PropTypes, { array } from 'prop-types';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   ExpansionPanel,
@@ -11,19 +10,9 @@ import {
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { fetchJsonPromise, alertmessage, parseJSON } from '../api/api-calls';
-import {
-  Dropdown,
-  DropdownButton,
-  SplitButton,
-  Form,
-  ButtonToolbar
-} from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { ThemeProvider } from '@material-ui/styles';
-import {
-  NormalFormTextField,
-  TypographyField
-} from '../create-workout/Workout-Fields';
-import { useStyles, editButtonTheme, summaryText } from './styles';
+import { useStyles, editButtonTheme } from './styles';
 import { Paper, Button } from '@material-ui/core';
 import {
   toTwelveHourTimeShort,
@@ -31,6 +20,7 @@ import {
   removeFromArrayByIndex,
   cleanAndTitle
 } from '../tools/tools';
+import { PreviewWorkout } from '../workouts/workout-view';
 
 const panelStyles = makeStyles(theme => ({
   root: {
@@ -250,7 +240,8 @@ const WorkoutLineItem = props => {
       <ExpansionPanelDetails>
         <div className={paperStyles.root}>
           <Paper className={paperStyles.paper}>
-            <WorkoutSummary data={props.workoutinfo} />
+            {/* <WorkoutSummary data={props.workoutinfo} /> */}
+            <PreviewWorkout workoutInfo={props.workoutinfo} />
           </Paper>
           <Paper className={paperStyles.paper}>
             <ThemeProvider theme={editButtonTheme}>

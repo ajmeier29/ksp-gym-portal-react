@@ -94,6 +94,7 @@ DialogBox.propTypes = {
 const FormButtons = withStyles({
   root: {
     'background-color': blueGrey[50],
+    margin: '5px',
     '&.MuiButton-text': {
       color: 'black'
     },
