@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from './styles.js';
 import { convertIfDate } from '../tools/tools';
+import { PreviewWorkout } from '../workouts/workout-view';
 
 // Displays the workout that was just persisted
 // TODO: Cleanup further and remove ID's and other useless data.
@@ -10,9 +11,10 @@ const NewWorkoutSummary = props => {
   const data = props.location.state.posted_date;
   return (
     <>
-      <div className={classes.mainWrapper}>
+      <div className={classes.preview}>
         <ul>
-          <Summary data={data} />
+          <PreviewWorkout workoutInfo={data} textSize={'h3'} />
+          {/* <Summary data={data} /> */}
         </ul>
       </div>
     </>

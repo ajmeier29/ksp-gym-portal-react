@@ -199,6 +199,11 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     'padding-top': '15px'
   },
+  preview: {
+    width: '75%',
+    'margin-left': '10%',
+    'margin-top': '2%'
+  },
   mainWrapper: {
     display: 'grid',
     'grid-template-columns': '1fr 1fr 1fr',

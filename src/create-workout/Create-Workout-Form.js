@@ -64,36 +64,19 @@ const sourceDevices = [
 ];
 
 const tempWorkoutInfoForPreview = {
-  id: '5dacae0ef79d345848c7a708',
-  workout_name: 'Adult Metabolic Workout',
-  date_added: '2019-10-20T18:57:18.47Z',
-  workout_times: [
-    '2019-10-20T18:55:00Z',
-    '2019-10-20T18:55:00Z',
-    '2019-10-20T18:55:00Z'
-  ],
+  id: '5db0d8ed0c7023c399810102',
+  workout_name: 'Metabolic Workout',
+  date_added: '2019-10-23T22:49:17.825Z',
+  workout_times: ['2019-10-23T16:00:00Z', '2019-10-23T21:00:00Z'],
   workout_image_url: 'www.youre-awesome.com',
   locations: [
     {
       id: '5da228c501edb329bb41a972',
       name: 'Bethlehem',
       phone: '6103905742'
-    },
-    {
-      id: '5da228c501edb329bb43a972',
-      name: 'Allentown',
-      phone: '6013905742'
     }
   ],
   devices: [
-    {
-      id: '5da228c511edb329bb49a972',
-      name: 'Allentown Device 2'
-    },
-    {
-      id: '5da228c501edb329bb49a972',
-      name: 'Allentown Device 1'
-    },
     {
       id: '5da228c521edb329bb49a972',
       name: 'Bethlehem Intro Device'
@@ -102,93 +85,83 @@ const tempWorkoutInfoForPreview = {
   workout_series: [
     {
       series_number: 1,
-      series_tag: '3x',
+      series_tag: '2 - 3x',
       exercises: [
         {
           exercise_number: 1,
-          exercise_name: 'BB/DB Chest Press',
-          exercise_reps: '12x-10x-8x'
+          exercise_name: 'DB Front Squat',
+          exercise_reps: '10 - 12x'
         },
         {
           exercise_number: 2,
-          exercise_name: 'Side Plant Partner Row',
-          exercise_reps: '10x ea'
+          exercise_name: 'Band Kickback',
+          exercise_reps: '8x ea'
         },
         {
           exercise_number: 3,
-          exercise_name: 'SB Leg Overs',
-          exercise_reps: '8x ea'
-        },
-        {
-          exercise_number: 4,
-          exercise_name: 'KB Arounds',
-          exercise_reps: '8x ea'
-        },
-        {
-          exercise_number: 5,
-          exercise_name: 'Facepulls',
-          exercise_reps: '10-15x'
-        }
-      ]
-    },
-    {
-      series_number: 2,
-      series_tag: '2-3x',
-      exercises: [
-        {
-          exercise_number: 1,
-          exercise_name: 'Plate Walk Overs',
+          exercise_name: 'SB Slam + Squat + Throw',
           exercise_reps: '6x ea'
         },
         {
-          exercise_number: 2,
-          exercise_name: 'Bench Dips (chain opt)',
-          exercise_reps: '10-20x ea'
-        },
-        {
-          exercise_number: 3,
-          exercise_name: 'BW Rows/Pull ups',
-          exercise_reps: '10-12x/6-8x'
-        },
-        {
           exercise_number: 4,
-          exercise_name: 'KB Toe Touches',
-          exercise_reps: '20x'
-        },
-        {
-          exercise_number: 5,
-          exercise_name: 'Lat Fun Crawls (width)',
-          exercise_reps: '4x'
+          exercise_name: 'Feet up opposite toe touches',
+          exercise_reps: '10x ea'
         }
       ]
     },
     {
       series_number: 2,
-      series_tag: ':30 seconds',
+      series_tag: '2 - 3x',
       exercises: [
         {
           exercise_number: 1,
-          exercise_name: 'Partner Plank Claps',
-          exercise_reps: ''
+          exercise_name: 'KB Banded Deadlift',
+          exercise_reps: '10 - 12x'
         },
         {
           exercise_number: 2,
-          exercise_name: 'DB Curl to Press',
+          exercise_name: "DB RDL's",
+          exercise_reps: '10 - 12x'
+        },
+        {
+          exercise_number: 3,
+          exercise_name: 'Lunge + Twist',
+          exercise_reps: '1 - 2x'
+        },
+        {
+          exercise_number: 4,
+          exercise_name: 'STB Transfers',
+          exercise_reps: '10x'
+        }
+      ]
+    },
+    {
+      series_number: 3,
+      series_tag: '2 - 3x',
+      exercises: [
+        {
+          exercise_number: 1,
+          exercise_name: 'High Knees',
+          exercise_reps: ':30 seconds'
+        },
+        {
+          exercise_number: 2,
+          exercise_name: 'Jump Ropes',
           exercise_reps: ''
         },
         {
           exercise_number: 3,
-          exercise_name: "Alt T's/Y's",
+          exercise_name: 'Lat Lunge Squats',
           exercise_reps: ''
         },
         {
           exercise_number: 4,
-          exercise_name: 'Ft up OH KB Hold',
+          exercise_name: 'SB Wall Sits',
           exercise_reps: ''
         },
         {
           exercise_number: 5,
-          exercise_name: 'Slider Saws',
+          exercise_name: 'FT up Hold',
           exercise_reps: ''
         }
       ]
@@ -511,6 +484,7 @@ const CreateWorkoutEntryForm = props => {
             open={previewDialogOpen}
             workoutInfo={buildWorkoutObject()}
             handleClose={handlPreviewClick}
+            textSize={'h3'}
           />
         </div>
       </div>

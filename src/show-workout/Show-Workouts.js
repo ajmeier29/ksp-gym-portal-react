@@ -240,8 +240,7 @@ const WorkoutLineItem = props => {
       <ExpansionPanelDetails>
         <div className={paperStyles.root}>
           <Paper className={paperStyles.paper}>
-            {/* <WorkoutSummary data={props.workoutinfo} /> */}
-            <PreviewWorkout workoutInfo={props.workoutinfo} />
+            <PreviewWorkout workoutInfo={props.workoutinfo} textSize={'h4'} />
           </Paper>
           <Paper className={paperStyles.paper}>
             <ThemeProvider theme={editButtonTheme}>

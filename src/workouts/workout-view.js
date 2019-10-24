@@ -49,7 +49,10 @@ const ViewWorkout = props => {
         onClose={props.handleClose}
       >
         <PreviewText>
-          <PreviewWorkout workoutInfo={props.workoutInfo} />
+          <PreviewWorkout
+            workoutInfo={props.workoutInfo}
+            textSize={props.textSize}
+          />
         </PreviewText>
         <PreviewDialogActions>
           <PreviewFormButtons onClick={props.handleClose}>
@@ -64,7 +67,8 @@ const ViewWorkout = props => {
 ViewWorkout.propTypes = {
   workoutInfo: PropTypes.object,
   open: PropTypes.bool,
-  handleClose: PropTypes.func
+  handleClose: PropTypes.func,
+  textSize: PropTypes.string
 };
 
 const PreviewWorkout = props => {
@@ -72,7 +76,7 @@ const PreviewWorkout = props => {
   const series = props.workoutInfo.workout_series;
   const classes = viewWorkoutStyles();
   const headingTextSize = 'h2';
-  const textSize = 'h3';
+  const textSize = props.textSize;
   return (
     <>
       <div className={classes.gridwrapper}>
@@ -102,7 +106,7 @@ const PreviewWorkout = props => {
           textSize={textSize}
         />
         <SeriesSummary
-          classes={[classes.righttopbox, classes.box4]}
+          classes={[classes.normalbox, classes.box4]}
           series={series[1]}
           textSize={textSize}
         />
@@ -117,7 +121,8 @@ const PreviewWorkout = props => {
 };
 
 PreviewWorkout.propTypes = {
-  workoutInfo: PropTypes.object
+  workoutInfo: PropTypes.object,
+  textSize: PropTypes.string
 };
 
 const SeriesSummary = props => {
