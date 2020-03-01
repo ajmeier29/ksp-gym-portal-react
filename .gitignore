@@ -46,3 +46,5 @@ chrome-user-data
 *.iml
 *.swp
 *.swo
+
+.env.development
