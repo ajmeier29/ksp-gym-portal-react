@@ -13,29 +13,32 @@ const viewWorkoutStyles = makeStyles(theme => ({
     'padding-top': '10px',
     'padding-left': '5px',
     'padding-right': '35px',
-    color: '#fff'
+    color: '#000000',
+    fontFamily: 'Roboto',
+    fontWeight: 'bold'
   },
   normalbox: {
     'background-color': '#fff',
-    color: '#444',
+    color: '#000000',
     'border-radius': '5px',
-    padding: '20px'
+    padding: '20px',
+    'font-size': '250%'
   },
   righttopbox: {
     'background-color': '#fff',
-    color: '#444',
+    color: '#000000',
     'border-radius': '5px',
     padding: '20px',
-    'font-size': '150%',
+    'font-size': '250%',
     height: '560px'
   },
   rightbottombox: {
     'background-color': '#fff',
-    color: '#444',
+    color: '#000000',
     'border-radius': '5px',
     padding: '20px',
     'margin-top': '160px',
-    'font-size': '150%',
+    'font-size': '250%',
     height: '240px'
   },
   box1: {

@@ -5,7 +5,6 @@ import { Typography } from '@material-ui/core';
 import { Dialog, DialogActions } from '@material-ui/core';
 import { FormButtons } from '../tools/react-tools';
 import viewWorkoutStyles from './styles';
-import 'typeface-roboto';
 
 const PreviewDialog = withStyles({
   paper: {
@@ -82,14 +81,8 @@ const PreviewWorkout = props => {
       <div className={classes.gridwrapper}>
         <div className={[classes.normalbox, classes.box1].join(' ')}>
           <div className={classes.box1elms}>
-            <Typography
-              variant={headingTextSize}
-              component={headingTextSize}
-              gutterBottom
-            >
-              {workoutDate.getMonth()} / {workoutDate.getDate()}{' '}
-              {props.workoutInfo.workout_name}{' '}
-            </Typography>
+            {workoutDate.getMonth()} / {workoutDate.getDate()}{' '}
+            {props.workoutInfo.workout_name}{' '}
           </div>
           <div className={classes.picture}>
             <img src={require('../assets/ksplogo_small.png')} />
@@ -129,21 +122,15 @@ const SeriesSummary = props => {
   if (props.series !== undefined && Object.keys(props.series).length > 0) {
     return (
       <div className={props.classes.join(' ')}>
-        <Typography
-          variant={props.textSize}
-          component={props.textSize}
-          gutterBottom
-        >
-          Series: {props.series.series_number}
-          <table>
-            {props.series.exercises.map(exercise => (
-              <tr key={exercise.exercise_number}>
-                <td>{exercise.exercise_name}</td>
-                <td align="right">{exercise.exercise_reps}</td>
-              </tr>
-            ))}
-          </table>
-        </Typography>
+        Series: {props.series.series_number}
+        <table>
+          {props.series.exercises.map(exercise => (
+            <tr key={exercise.exercise_number}>
+              <td>&#8226; {exercise.exercise_name}</td>
+              <td align="right">{exercise.exercise_reps}</td>
+            </tr>
+          ))}
+        </table>
       </div>
     );
   } else {
