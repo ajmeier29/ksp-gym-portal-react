@@ -81,7 +81,7 @@ const PreviewWorkout = props => {
       <div className={classes.gridwrapper}>
         <div className={[classes.normalbox, classes.box1].join(' ')}>
           <div className={classes.box1elms}>
-            {workoutDate.getMonth()} / {workoutDate.getDate()}{' '}
+            {workoutDate.getMonth()} / {workoutDate.getDate()} {'asdfsd'}{' '}
             {props.workoutInfo.workout_name}{' '}
           </div>
           <div className={classes.picture}>

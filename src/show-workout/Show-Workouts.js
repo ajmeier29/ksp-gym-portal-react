@@ -229,7 +229,10 @@ const WorkoutLineItem = props => {
   };
 
   return (
-    <ExpansionPanel className={classes.summary + ' rounded'}>
+    <ExpansionPanel
+      expanded={process.env.NODE_ENV === 'development' ? 'true' : 'false'} // expand in development
+      className={classes.summary + ' rounded'}
+    >
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
