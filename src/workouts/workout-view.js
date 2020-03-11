@@ -122,7 +122,7 @@ const SeriesSummary = props => {
   if (props.series !== undefined && Object.keys(props.series).length > 0) {
     return (
       <div className={props.classes.join(' ')}>
-        Series: {props.series.series_number}
+        Series: {props.series.series_number} | {props.series.series_tag}
         <table>
           {props.series.exercises.map(exercise => (
             <tr key={exercise.exercise_number}>
