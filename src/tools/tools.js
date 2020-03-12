@@ -15,6 +15,13 @@ const toTwelveHourTimeShort = date => {
     timeStyle: 'short'
   });
 };
+// Get the hours from a date time.
+// Ex: '8PM'
+const getNumericHours = date => {
+  return date.toLocaleString('en-US', {
+    hour: 'numeric'
+  });
+};
 
 const isValidDate = date => {
   return date instanceof Date && !isNaN(date);
@@ -59,5 +66,6 @@ export {
   toTwelveHourTimeShort,
   convertIfDate,
   cleanAndTitle,
-  titleize
+  titleize,
+  getNumericHours
 };

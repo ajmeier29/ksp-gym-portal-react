@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { Dialog, DialogActions } from '@material-ui/core';
 import { FormButtons } from '../tools/react-tools';
 import viewWorkoutStyles from './styles';
+import { getNumericHours } from '../tools/tools';
 
 const PreviewDialog = withStyles({
   paper: {
@@ -74,15 +75,17 @@ const PreviewWorkout = props => {
   const workoutDate = new Date(props.workoutInfo.workout_times[0]);
   const series = props.workoutInfo.workout_series;
   const classes = viewWorkoutStyles();
-  const headingTextSize = 'h2';
+  const workoutTime = getNumericHours(new Date());
+  //const headingTextSize = 'h2';
   const textSize = props.textSize;
   return (
     <>
       <div className={classes.gridwrapper}>
         <div className={[classes.normalbox, classes.box1].join(' ')}>
           <div className={classes.box1elms}>
-            {workoutDate.getMonth()} / {workoutDate.getDate()}{' '}
-            {props.workoutInfo.workout_name}{' '}
+            {workoutDate.getMonth()} / {workoutDate.getDate()}
+            {' | '}
+            {workoutTime} {props.workoutInfo.workout_name}{' '}
           </div>
           <div className={classes.picture}>
             <img src={require('../assets/ksplogo_small.png')} />
@@ -122,7 +125,7 @@ const SeriesSummary = props => {
   if (props.series !== undefined && Object.keys(props.series).length > 0) {
     return (
       <div className={props.classes.join(' ')}>
-        Series: {props.series.series_number}
+        Series: {props.series.series_number} | {props.series.series_tag}
         <table>
           {props.series.exercises.map(exercise => (
             <tr key={exercise.exercise_number}>
